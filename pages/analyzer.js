@@ -67,8 +67,8 @@ export default function Analyzer() {
   return (
     <>
       <Head>
-        <title>Analyzer - Build & Buy AI</title>
-        <meta name="description" content="AI-powered real estate deal analyzer" />
+        <title>Deal Analyzer - CapFlow</title>
+        <meta name="description" content="Analyze rental properties and commercial developments with CapFlow" />
       </Head>
 
       <div style={styles.page}>
@@ -77,13 +77,16 @@ export default function Analyzer() {
           <div style={styles.navContent}>
             <Link href="/">
               <a style={styles.logo}>
-                <span style={styles.logoIcon}>🏢</span>
-                <span style={styles.logoText}>Build & Buy AI</span>
+                <span style={styles.logoIcon}>📊</span>
+                <span style={styles.logoText}>CapFlow</span>
               </a>
             </Link>
-            <Link href="/">
-              <a style={styles.backButton}>← Back to Home</a>
-            </Link>
+            <div style={styles.navRight}>
+              <span style={styles.navTagline}>Where capital meets cash flow</span>
+              <Link href="/">
+                <a style={styles.backButton}>← Back to Home</a>
+              </Link>
+            </div>
           </div>
         </nav>
 
@@ -91,7 +94,7 @@ export default function Analyzer() {
           <div style={styles.content}>
             <div style={styles.header}>
               <h1 style={styles.title}>Deal Analyzer</h1>
-              <p style={styles.subtitle}>Analyze residential rentals and commercial development deals</p>
+              <p style={styles.subtitle}>Professional pro formas in 5 minutes</p>
             </div>
 
             {/* Deal Type Tabs */}
@@ -350,8 +353,9 @@ export default function Analyzer() {
               <div style={styles.results}>
                 <div style={styles.resultsHeader}>
                   <h2 style={styles.resultsTitle}>
-                    {dealType === 'residential' ? '📊 Rental Analysis' : '🏗️ Development Pro Forma'}
+                    {dealType === 'residential' ? '📊 Investment Analysis' : '🏗️ Development Pro Forma'}
                   </h2>
+                  <div style={styles.poweredBy}>Powered by CapFlow</div>
                 </div>
                 <div style={styles.analysisText}>
                   {analysis.split('\n').map((line, i) => {
@@ -403,7 +407,7 @@ const styles = {
   nav: {
     position: 'sticky',
     top: 0,
-    background: 'rgba(255, 255, 255, 0.95)',
+    background: 'rgba(255, 255, 255, 0.98)',
     backdropFilter: 'blur(10px)',
     borderBottom: '1px solid #e5e7eb',
     padding: '20px 0',
@@ -428,15 +432,25 @@ const styles = {
     fontSize: '28px',
   },
   logoText: {
-    fontSize: '20px',
+    fontSize: '24px',
     fontWeight: 'bold',
-    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+    background: 'linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%)',
     WebkitBackgroundClip: 'text',
     WebkitTextFillColor: 'transparent',
   },
+  navRight: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '24px',
+  },
+  navTagline: {
+    fontSize: '14px',
+    color: '#64748b',
+    fontStyle: 'italic',
+  },
   backButton: {
     padding: '10px 20px',
-    color: '#667eea',
+    color: '#0ea5e9',
     textDecoration: 'none',
     fontWeight: '600',
     fontSize: '14px',
@@ -462,14 +476,14 @@ const styles = {
   title: {
     fontSize: '36px',
     fontWeight: 'bold',
-    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+    background: 'linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%)',
     WebkitBackgroundClip: 'text',
     WebkitTextFillColor: 'transparent',
     marginBottom: '10px',
   },
   subtitle: {
     fontSize: '18px',
-    color: '#6b7280',
+    color: '#64748b',
   },
   tabs: {
     display: 'flex',
@@ -490,8 +504,8 @@ const styles = {
     transition: 'all 0.2s',
   },
   tabActive: {
-    color: '#667eea',
-    borderBottom: '3px solid #667eea',
+    color: '#0ea5e9',
+    borderBottom: '3px solid #0ea5e9',
   },
   form: {
     marginBottom: '30px',
@@ -526,7 +540,7 @@ const styles = {
   button: {
     width: '100%',
     padding: '16px',
-    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+    background: 'linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%)',
     color: 'white',
     border: 'none',
     borderRadius: '10px',
@@ -534,7 +548,7 @@ const styles = {
     fontWeight: 'bold',
     cursor: 'pointer',
     transition: 'transform 0.2s, box-shadow 0.2s',
-    boxShadow: '0 4px 15px rgba(102, 126, 234, 0.4)',
+    boxShadow: '0 4px 15px rgba(14, 165, 233, 0.4)',
   },
   results: {
     marginTop: '40px',
@@ -547,12 +561,20 @@ const styles = {
     borderBottom: '2px solid #e5e7eb',
     paddingBottom: '16px',
     marginBottom: '24px',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   resultsTitle: {
     fontSize: '24px',
     color: '#111827',
     fontWeight: 'bold',
     margin: 0,
+  },
+  poweredBy: {
+    fontSize: '12px',
+    color: '#64748b',
+    fontWeight: '600',
   },
   analysisText: {
     fontSize: '16px',
