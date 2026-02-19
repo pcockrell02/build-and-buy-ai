@@ -1,4 +1,4 @@
-javascriptimport Anthropic from '@anthropic-ai/sdk'
+import Anthropic from '@anthropic-ai/sdk'
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
