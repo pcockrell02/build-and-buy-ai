@@ -63,22 +63,3 @@ Format your response with clear headers and be specific with numbers.`
     })
   }
 }
-```
-
-4. Commit changes
-
----
-
-## ✅ **Verify Your Structure**
-
-After creating all files, your repository should look like this:
-```
-build-and-buy-ai/
-├── .gitignore
-├── README.md
-├── next.config.js
-├── package.json
-└── pages/
-    ├── index.js
-    └── api/
-        └── analyze.js
