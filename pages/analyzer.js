@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 
@@ -6,6 +6,10 @@ export default function Analyzer() {
   const [dealType, setDealType] = useState('residential')
   const [loading, setLoading] = useState(false)
   const [analysis, setAnalysis] = useState('')
+  const [analysisCount, setAnalysisCount] = useState(0)
+  const [showEmailModal, setShowEmailModal] = useState(false)
+  const [email, setEmail] = useState('')
+  const [emailSubmitted, setEmailSubmitted] = useState(false)
   
   // Residential form data
   const [residentialData, setResidentialData] = useState({
@@ -31,6 +35,14 @@ export default function Analyzer() {
     opexPercentage: '40'
   })
 
+  // Load analysis count from localStorage on mount
+  useEffect(() => {
+    const count = parseInt(localStorage.getItem('capflow_analysis_count') || '0')
+    const hasEmail = localStorage.getItem('capflow_user_email')
+    setAnalysisCount(count)
+    setEmailSubmitted(!!hasEmail)
+  }, [])
+
   const handleResidentialChange = (e) => {
     setResidentialData({ ...residentialData, [e.target.name]: e.target.value })
   }
@@ -41,6 +53,13 @@ export default function Analyzer() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    
+    // Check if user has exceeded free analyses
+    if (analysisCount >= 3 && !emailSubmitted) {
+      setShowEmailModal(true)
+      return
+    }
+
     setLoading(true)
     setAnalysis('')
 
@@ -57,12 +76,44 @@ export default function Analyzer() {
 
       const data = await response.json()
       setAnalysis(data.analysis)
+      
+      // Increment analysis count
+      const newCount = analysisCount + 1
+      setAnalysisCount(newCount)
+      localStorage.setItem('capflow_analysis_count', newCount.toString())
+      
     } catch (error) {
       setAnalysis('Error analyzing property. Please try again.')
     } finally {
       setLoading(false)
     }
   }
+
+  const handleEmailSubmit = async (e) => {
+    e.preventDefault()
+    
+    try {
+      const response = await fetch('/api/capture-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          email, 
+          source: 'analyzer_limit' 
+        })
+      })
+
+      if (response.ok) {
+        localStorage.setItem('capflow_user_email', email)
+        setEmailSubmitted(true)
+        setShowEmailModal(false)
+        // Allow them to continue with unlimited analyses after email
+      }
+    } catch (error) {
+      console.error('Error capturing email:', error)
+    }
+  }
+
+  const remainingAnalyses = emailSubmitted ? '∞' : Math.max(0, 3 - analysisCount)
 
   return (
     <>
@@ -82,13 +133,62 @@ export default function Analyzer() {
               </a>
             </Link>
             <div style={styles.navRight}>
-              <span style={styles.navTagline}>Where capital meets cash flow</span>
+              {!emailSubmitted && (
+                <div style={styles.analysisCounter}>
+                  <span style={styles.counterLabel}>Free analyses remaining:</span>
+                  <span style={styles.counterValue}>{remainingAnalyses}/3</span>
+                </div>
+              )}
               <Link href="/">
-                <a style={styles.backButton}>← Back to Home</a>
+                <a style={styles.backButton}>← Home</a>
               </Link>
             </div>
           </div>
         </nav>
+
+        {/* Email Capture Modal */}
+        {showEmailModal && (
+          <div style={styles.modalOverlay} onClick={() => setShowEmailModal(false)}>
+            <div style={styles.modal} onClick={(e) => e.stopPropagation()}>
+              <button style={styles.closeButton} onClick={() => setShowEmailModal(false)}>×</button>
+              
+              <div style={styles.modalIcon}>🚀</div>
+              <h2 style={styles.modalTitle}>You've Used Your Free Analyses</h2>
+              <p style={styles.modalText}>
+                Continue analyzing unlimited deals by entering your email, 
+                or upgrade to Pro for advanced features.
+              </p>
+              
+              <form onSubmit={handleEmailSubmit} style={styles.emailForm}>
+                <input
+                  type="email"
+                  placeholder="Enter your email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  style={styles.emailInput}
+                  required
+                />
+                <button type="submit" style={styles.emailButton}>
+                  Continue Free
+                </button>
+              </form>
+              
+              <div style={styles.modalDivider}>
+                <span style={styles.dividerText}>or</span>
+              </div>
+              
+              <Link href="/#pricing">
+                <a style={styles.upgradeButton}>
+                  Upgrade to Pro - $49/month
+                </a>
+              </Link>
+              
+              <p style={styles.modalFootnote}>
+                Pro includes: Unlimited analyses, PDF exports, saved history, and more
+              </p>
+            </div>
+          </div>
+        )}
 
         <div style={styles.container}>
           <div style={styles.content}>
@@ -359,11 +459,9 @@ export default function Analyzer() {
                 </div>
                 <div style={styles.analysisText}>
                   {analysis.split('\n').map((line, i) => {
-                    // Handle headers (lines starting with ##)
                     if (line.startsWith('## ')) {
                       return <h3 key={i} style={styles.analysisHeader}>{line.replace('## ', '')}</h3>
                     }
-                    // Handle bold text (**text**)
                     if (line.includes('**')) {
                       const parts = line.split('**')
                       return (
@@ -374,9 +472,18 @@ export default function Analyzer() {
                         </p>
                       )
                     }
-                    // Regular lines
                     return line ? <p key={i} style={styles.analysisParagraph}>{line}</p> : <br key={i} />
                   })}
+                </div>
+                
+                {/* PDF Export CTA */}
+                <div style={styles.exportSection}>
+                  <button style={styles.exportButtonDisabled} disabled>
+                    📄 Download PDF Report (Pro Feature)
+                  </button>
+                  <p style={styles.exportNote}>
+                    Upgrade to Pro to download professional PDF reports
+                  </p>
                 </div>
               </div>
             )}
@@ -399,17 +506,18 @@ export default function Analyzer() {
 const styles = {
   page: {
     minHeight: '100vh',
-    background: '#f9fafb',
+    background: '#0f172a',
     fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+    color: '#e2e8f0',
   },
   
   // Navigation
   nav: {
     position: 'sticky',
     top: 0,
-    background: 'rgba(255, 255, 255, 0.98)',
-    backdropFilter: 'blur(10px)',
-    borderBottom: '1px solid #e5e7eb',
+    background: 'rgba(15, 23, 42, 0.95)',
+    backdropFilter: 'blur(12px)',
+    borderBottom: '1px solid rgba(148, 163, 184, 0.1)',
     padding: '20px 0',
     zIndex: 1000,
   },
@@ -434,7 +542,7 @@ const styles = {
   logoText: {
     fontSize: '24px',
     fontWeight: 'bold',
-    background: 'linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%)',
+    background: 'linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%)',
     WebkitBackgroundClip: 'text',
     WebkitTextFillColor: 'transparent',
   },
@@ -443,31 +551,156 @@ const styles = {
     alignItems: 'center',
     gap: '24px',
   },
-  navTagline: {
+  analysisCounter: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px',
+    padding: '8px 16px',
+    background: 'rgba(6, 182, 212, 0.1)',
+    border: '1px solid rgba(6, 182, 212, 0.3)',
+    borderRadius: '20px',
+  },
+  counterLabel: {
+    fontSize: '13px',
+    color: '#94a3b8',
+  },
+  counterValue: {
     fontSize: '14px',
-    color: '#64748b',
-    fontStyle: 'italic',
+    fontWeight: '700',
+    color: '#06b6d4',
   },
   backButton: {
     padding: '10px 20px',
-    color: '#0ea5e9',
+    color: '#06b6d4',
     textDecoration: 'none',
     fontWeight: '600',
     fontSize: '14px',
-    transition: 'color 0.2s',
     cursor: 'pointer',
   },
   
+  // Modal
+  modalOverlay: {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    background: 'rgba(0, 0, 0, 0.8)',
+    backdropFilter: 'blur(8px)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 2000,
+    padding: '20px',
+  },
+  modal: {
+    background: '#1e293b',
+    borderRadius: '24px',
+    padding: '48px',
+    maxWidth: '500px',
+    width: '100%',
+    border: '1px solid rgba(6, 182, 212, 0.3)',
+    boxShadow: '0 0 60px rgba(6, 182, 212, 0.2)',
+    position: 'relative',
+    textAlign: 'center',
+  },
+  closeButton: {
+    position: 'absolute',
+    top: '16px',
+    right: '16px',
+    background: 'transparent',
+    border: 'none',
+    color: '#64748b',
+    fontSize: '32px',
+    cursor: 'pointer',
+    lineHeight: '1',
+  },
+  modalIcon: {
+    fontSize: '64px',
+    marginBottom: '24px',
+  },
+  modalTitle: {
+    fontSize: '28px',
+    fontWeight: '800',
+    color: '#f1f5f9',
+    marginBottom: '16px',
+  },
+  modalText: {
+    fontSize: '16px',
+    color: '#94a3b8',
+    lineHeight: '1.6',
+    marginBottom: '32px',
+  },
+  emailForm: {
+    marginBottom: '24px',
+  },
+  emailInput: {
+    width: '100%',
+    padding: '16px',
+    background: 'rgba(51, 65, 85, 0.5)',
+    border: '2px solid rgba(148, 163, 184, 0.2)',
+    borderRadius: '12px',
+    color: '#e2e8f0',
+    fontSize: '16px',
+    marginBottom: '16px',
+    boxSizing: 'border-box',
+    outline: 'none',
+  },
+  emailButton: {
+    width: '100%',
+    padding: '16px',
+    background: 'linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%)',
+    color: 'white',
+    border: 'none',
+    borderRadius: '12px',
+    fontSize: '16px',
+    fontWeight: '700',
+    cursor: 'pointer',
+    boxShadow: '0 0 30px rgba(6, 182, 212, 0.4)',
+  },
+  modalDivider: {
+    position: 'relative',
+    textAlign: 'center',
+    margin: '24px 0',
+  },
+  dividerText: {
+    background: '#1e293b',
+    padding: '0 16px',
+    color: '#64748b',
+    fontSize: '14px',
+    position: 'relative',
+    zIndex: 1,
+  },
+  upgradeButton: {
+    display: 'block',
+    width: '100%',
+    padding: '16px',
+    background: 'transparent',
+    color: '#06b6d4',
+    border: '2px solid rgba(6, 182, 212, 0.3)',
+    borderRadius: '12px',
+    textDecoration: 'none',
+    fontSize: '16px',
+    fontWeight: '700',
+    cursor: 'pointer',
+  },
+  modalFootnote: {
+    marginTop: '16px',
+    fontSize: '13px',
+    color: '#64748b',
+  },
+  
+  // Main Content
   container: {
     padding: '40px 20px',
   },
   content: {
     maxWidth: '900px',
     margin: '0 auto',
-    background: 'white',
+    background: 'rgba(30, 41, 59, 0.5)',
     borderRadius: '16px',
     padding: '40px',
-    boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
+    border: '1px solid rgba(148, 163, 184, 0.1)',
   },
   header: {
     textAlign: 'center',
@@ -476,20 +709,20 @@ const styles = {
   title: {
     fontSize: '36px',
     fontWeight: 'bold',
-    background: 'linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%)',
+    background: 'linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%)',
     WebkitBackgroundClip: 'text',
     WebkitTextFillColor: 'transparent',
     marginBottom: '10px',
   },
   subtitle: {
     fontSize: '18px',
-    color: '#64748b',
+    color: '#94a3b8',
   },
   tabs: {
     display: 'flex',
     gap: '10px',
     marginBottom: '30px',
-    borderBottom: '2px solid #e5e7eb',
+    borderBottom: '2px solid rgba(148, 163, 184, 0.1)',
   },
   tab: {
     flex: 1,
@@ -499,13 +732,13 @@ const styles = {
     borderBottom: '3px solid transparent',
     fontSize: '16px',
     fontWeight: '600',
-    color: '#6b7280',
+    color: '#64748b',
     cursor: 'pointer',
     transition: 'all 0.2s',
   },
   tabActive: {
-    color: '#0ea5e9',
-    borderBottom: '3px solid #0ea5e9',
+    color: '#06b6d4',
+    borderBottom: '3px solid #06b6d4',
   },
   form: {
     marginBottom: '30px',
@@ -522,15 +755,17 @@ const styles = {
   label: {
     display: 'block',
     fontWeight: '600',
-    color: '#374151',
+    color: '#e2e8f0',
     marginBottom: '8px',
     fontSize: '14px',
   },
   input: {
     width: '100%',
     padding: '12px 16px',
-    border: '2px solid #e5e7eb',
+    background: 'rgba(51, 65, 85, 0.5)',
+    border: '2px solid rgba(148, 163, 184, 0.2)',
     borderRadius: '8px',
+    color: '#e2e8f0',
     fontSize: '16px',
     boxSizing: 'border-box',
     transition: 'border-color 0.2s',
@@ -540,25 +775,24 @@ const styles = {
   button: {
     width: '100%',
     padding: '16px',
-    background: 'linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%)',
+    background: 'linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%)',
     color: 'white',
     border: 'none',
     borderRadius: '10px',
     fontSize: '18px',
     fontWeight: 'bold',
     cursor: 'pointer',
-    transition: 'transform 0.2s, box-shadow 0.2s',
-    boxShadow: '0 4px 15px rgba(14, 165, 233, 0.4)',
+    boxShadow: '0 0 30px rgba(6, 182, 212, 0.4)',
   },
   results: {
     marginTop: '40px',
     padding: '30px',
-    background: '#f9fafb',
+    background: 'rgba(51, 65, 85, 0.3)',
     borderRadius: '12px',
-    border: '2px solid #e5e7eb',
+    border: '1px solid rgba(148, 163, 184, 0.1)',
   },
   resultsHeader: {
-    borderBottom: '2px solid #e5e7eb',
+    borderBottom: '2px solid rgba(148, 163, 184, 0.1)',
     paddingBottom: '16px',
     marginBottom: '24px',
     display: 'flex',
@@ -567,7 +801,7 @@ const styles = {
   },
   resultsTitle: {
     fontSize: '24px',
-    color: '#111827',
+    color: '#f1f5f9',
     fontWeight: 'bold',
     margin: 0,
   },
@@ -579,26 +813,49 @@ const styles = {
   analysisText: {
     fontSize: '16px',
     lineHeight: '1.8',
-    color: '#374151',
+    color: '#e2e8f0',
   },
   analysisHeader: {
     fontSize: '20px',
     fontWeight: 'bold',
-    color: '#111827',
+    color: '#f1f5f9',
     marginTop: '24px',
     marginBottom: '12px',
   },
   analysisParagraph: {
     margin: '8px 0',
+    color: '#cbd5e1',
+  },
+  exportSection: {
+    marginTop: '32px',
+    paddingTop: '24px',
+    borderTop: '1px solid rgba(148, 163, 184, 0.1)',
+    textAlign: 'center',
+  },
+  exportButtonDisabled: {
+    padding: '14px 24px',
+    background: 'rgba(100, 116, 139, 0.2)',
+    color: '#64748b',
+    border: '2px solid rgba(100, 116, 139, 0.3)',
+    borderRadius: '10px',
+    fontSize: '16px',
+    fontWeight: '600',
+    cursor: 'not-allowed',
+    marginBottom: '8px',
+  },
+  exportNote: {
+    fontSize: '13px',
+    color: '#64748b',
+    margin: 0,
   },
   footer: {
     marginTop: '30px',
     paddingTop: '20px',
-    borderTop: '1px solid #e5e7eb',
+    borderTop: '1px solid rgba(148, 163, 184, 0.1)',
   },
   footerText: {
     fontSize: '14px',
-    color: '#6b7280',
+    color: '#64748b',
     textAlign: 'center',
     margin: 0,
   },
