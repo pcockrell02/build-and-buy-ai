@@ -10,6 +10,7 @@ export default function Analyzer() {
   const [showEmailModal, setShowEmailModal] = useState(false)
   const [email, setEmail] = useState('')
   const [emailSubmitted, setEmailSubmitted] = useState(false)
+  const [currentPropertyData, setCurrentPropertyData] = useState(null)
   
   // Residential form data
   const [residentialData, setResidentialData] = useState({
@@ -67,6 +68,9 @@ export default function Analyzer() {
       ? { ...residentialData, dealType: 'residential' }
       : { ...commercialData, dealType: 'commercial' }
 
+    // Store current property data for PDF export
+    setCurrentPropertyData(dataToSend)
+
     try {
       const response = await fetch('/api/analyze', {
         method: 'POST',
@@ -106,11 +110,129 @@ export default function Analyzer() {
         localStorage.setItem('capflow_user_email', email)
         setEmailSubmitted(true)
         setShowEmailModal(false)
-        // Allow them to continue with unlimited analyses after email
       }
     } catch (error) {
       console.error('Error capturing email:', error)
     }
+  }
+
+  const generatePDF = async () => {
+    // Dynamically import jsPDF only when needed (client-side only)
+    const { jsPDF } = await import('jspdf')
+    
+    const doc = new jsPDF()
+    const pageWidth = doc.internal.pageSize.getWidth()
+    const pageHeight = doc.internal.pageSize.getHeight()
+    const margin = 20
+    const contentWidth = pageWidth - (margin * 2)
+    let yPosition = margin
+
+    // Helper function to add text with word wrap
+    const addText = (text, fontSize = 11, isBold = false, color = [255, 255, 255]) => {
+      doc.setFontSize(fontSize)
+      doc.setFont('helvetica', isBold ? 'bold' : 'normal')
+      doc.setTextColor(...color)
+      
+      const lines = doc.splitTextToSize(text, contentWidth)
+      lines.forEach(line => {
+        if (yPosition > pageHeight - margin) {
+          doc.addPage()
+          yPosition = margin
+        }
+        doc.text(line, margin, yPosition)
+        yPosition += fontSize * 0.5
+      })
+      yPosition += 3
+    }
+
+    // Dark background
+    doc.setFillColor(15, 23, 42) // #0f172a
+    doc.rect(0, 0, pageWidth, pageHeight, 'F')
+
+    // Header with gradient effect (simulated with rectangles)
+    doc.setFillColor(6, 182, 212) // Cyan
+    doc.rect(0, 0, pageWidth, 40, 'F')
+    
+    // CapFlow logo/title
+    doc.setFontSize(24)
+    doc.setFont('helvetica', 'bold')
+    doc.setTextColor(255, 255, 255)
+    doc.text('📊 CapFlow', margin, 25)
+    
+    doc.setFontSize(10)
+    doc.setFont('helvetica', 'normal')
+    doc.setTextColor(200, 220, 240)
+    doc.text('Professional Real Estate Analysis', margin, 33)
+
+    yPosition = 55
+
+    // Property Details Section
+    doc.setFillColor(30, 41, 59) // Dark card background
+    doc.roundedRect(margin, yPosition, contentWidth, 40, 3, 3, 'F')
+    
+    yPosition += 10
+    addText('PROPERTY DETAILS', 14, true, [6, 182, 212])
+    yPosition += 5
+
+    if (currentPropertyData) {
+      if (currentPropertyData.dealType === 'residential') {
+        addText(`Address: ${currentPropertyData.address}`, 11, false, [203, 213, 225])
+        addText(`Asking Price: $${parseInt(currentPropertyData.price).toLocaleString()}`, 11, false, [203, 213, 225])
+        addText(`Bedrooms: ${currentPropertyData.bedrooms} | Bathrooms: ${currentPropertyData.bathrooms} | Sqft: ${currentPropertyData.sqft}`, 11, false, [203, 213, 225])
+      } else {
+        addText(`Address: ${currentPropertyData.address}`, 11, false, [203, 213, 225])
+        addText(`Land Price: $${parseInt(currentPropertyData.landPrice).toLocaleString()} | Size: ${currentPropertyData.landSize} acres | Zoning: ${currentPropertyData.zoning}`, 11, false, [203, 213, 225])
+        addText(`Type: ${currentPropertyData.developmentType} | Units: ${currentPropertyData.units} | Avg Unit Size: ${currentPropertyData.avgUnitSize} sqft`, 11, false, [203, 213, 225])
+      }
+    }
+
+    yPosition += 10
+
+    // Analysis Section
+    doc.setFillColor(30, 41, 59)
+    doc.roundedRect(margin, yPosition, contentWidth, pageHeight - yPosition - margin - 30, 3, 3, 'F')
+    
+    yPosition += 10
+    addText('ANALYSIS RESULTS', 14, true, [6, 182, 212])
+    yPosition += 5
+
+    // Parse and format analysis text
+    const lines = analysis.split('\n')
+    lines.forEach(line => {
+      if (line.startsWith('## ')) {
+        yPosition += 5
+        addText(line.replace('## ', ''), 12, true, [59, 130, 246])
+      } else if (line.includes('**')) {
+        // Handle bold text
+        const parts = line.split('**')
+        let formattedLine = ''
+        parts.forEach((part, i) => {
+          formattedLine += part
+        })
+        addText(formattedLine, 11, false, [203, 213, 225])
+      } else if (line.trim()) {
+        addText(line, 11, false, [203, 213, 225])
+      } else {
+        yPosition += 3
+      }
+    })
+
+    // Footer
+    const footerY = pageHeight - 20
+    doc.setFillColor(15, 23, 42)
+    doc.rect(0, footerY, pageWidth, 20, 'F')
+    
+    doc.setFontSize(9)
+    doc.setTextColor(100, 116, 139)
+    doc.text('Generated by CapFlow | Where capital meets cash flow', margin, footerY + 12)
+    doc.text(new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }), pageWidth - margin - 40, footerY + 12)
+
+    // Save the PDF
+    const fileName = currentPropertyData 
+      ? `CapFlow_Analysis_${currentPropertyData.address?.replace(/[^a-z0-9]/gi, '_')}_${new Date().getTime()}.pdf`
+      : `CapFlow_Analysis_${new Date().getTime()}.pdf`
+    
+    doc.save(fileName)
   }
 
   const remainingAnalyses = emailSubmitted ? '∞' : Math.max(0, 3 - analysisCount)
@@ -156,7 +278,7 @@ export default function Analyzer() {
               <h2 style={styles.modalTitle}>You've Used Your Free Analyses</h2>
               <p style={styles.modalText}>
                 Continue analyzing unlimited deals by entering your email, 
-                or upgrade to Pro for advanced features.
+                or upgrade to Pro for advanced features like PDF exports.
               </p>
               
               <form onSubmit={handleEmailSubmit} style={styles.emailForm}>
@@ -476,14 +598,25 @@ export default function Analyzer() {
                   })}
                 </div>
                 
-                {/* PDF Export CTA */}
+                {/* PDF Export Button */}
                 <div style={styles.exportSection}>
-                  <button style={styles.exportButtonDisabled} disabled>
-                    📄 Download PDF Report (Pro Feature)
-                  </button>
-                  <p style={styles.exportNote}>
-                    Upgrade to Pro to download professional PDF reports
-                  </p>
+                  {emailSubmitted ? (
+                    <button 
+                      onClick={generatePDF}
+                      style={styles.exportButton}
+                    >
+                      📄 Download PDF Report
+                    </button>
+                  ) : (
+                    <>
+                      <button style={styles.exportButtonDisabled} disabled>
+                        📄 Download PDF Report (Email Required)
+                      </button>
+                      <p style={styles.exportNote}>
+                        Enter your email above to unlock PDF exports
+                      </p>
+                    </>
+                  )}
                 </div>
               </div>
             )}
@@ -578,7 +711,7 @@ const styles = {
     cursor: 'pointer',
   },
   
-  // Modal
+  // Modal (same as before)
   modalOverlay: {
     position: 'fixed',
     top: 0,
@@ -831,6 +964,18 @@ const styles = {
     paddingTop: '24px',
     borderTop: '1px solid rgba(148, 163, 184, 0.1)',
     textAlign: 'center',
+  },
+  exportButton: {
+    padding: '14px 24px',
+    background: 'linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%)',
+    color: 'white',
+    border: 'none',
+    borderRadius: '10px',
+    fontSize: '16px',
+    fontWeight: '600',
+    cursor: 'pointer',
+    boxShadow: '0 0 20px rgba(6, 182, 212, 0.3)',
+    transition: 'transform 0.2s',
   },
   exportButtonDisabled: {
     padding: '14px 24px',
