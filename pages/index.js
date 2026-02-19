@@ -3,18 +3,16 @@ import Head from 'next/head'
 import Link from 'next/link'
 
 export default function Home() {
-  const [activeSection, setActiveSection] = useState('hero')
-
   return (
     <>
       <Head>
-        <title>CapFlow - Real Estate Deal Analysis Platform</title>
-        <meta name="description" content="Analyze rental properties and commercial developments in minutes. Professional pro formas, cap rates, and IRR projections." />
+        <title>CapFlow - Invest With Confidence</title>
+        <meta name="description" content="The unfair advantage every real estate investor needs. Institutional-grade pro formas in 5 minutes." />
       </Head>
 
       <div style={styles.page}>
-        {/* Top Navigation Bar */}
-        <nav style={styles.topNav}>
+        {/* Navigation */}
+        <nav style={styles.nav}>
           <div style={styles.navContent}>
             <div style={styles.logo}>
               <span style={styles.logoIcon}>📊</span>
@@ -32,19 +30,21 @@ export default function Home() {
         </nav>
 
         <div style={styles.mainContent}>
-          {/* Left Sidebar - Quick Access */}
+          {/* Sidebar */}
           <aside style={styles.sidebar}>
             <div style={styles.sidebarContent}>
               <h3 style={styles.sidebarTitle}>Quick Start</h3>
+              
               <Link href="/analyzer">
                 <a style={styles.sidebarButton}>
                   <span style={styles.sidebarIcon}>🏘️</span>
                   <div>
                     <div style={styles.sidebarButtonTitle}>Rental Analysis</div>
-                    <div style={styles.sidebarButtonDesc}>Single-family & multifamily</div>
+                    <div style={styles.sidebarButtonDesc}>Single & multifamily</div>
                   </div>
                 </a>
               </Link>
+              
               <Link href="/analyzer">
                 <a style={styles.sidebarButton}>
                   <span style={styles.sidebarIcon}>🏗️</span>
@@ -68,34 +68,37 @@ export default function Home() {
                 </div>
                 <div style={styles.sidebarStat}>
                   <div style={styles.sidebarStatNumber}>847</div>
-                  <div style={styles.sidebarStatLabel}>Deals Closed</div>
+                  <div style={styles.sidebarStatLabel}>Closed</div>
                 </div>
               </div>
             </div>
           </aside>
 
-          {/* Main Content Area */}
+          {/* Main Content */}
           <main style={styles.content}>
             {/* Hero Section */}
-            <section style={styles.hero} id="hero">
+            <section style={styles.hero}>
               <div style={styles.heroContent}>
                 <div style={styles.badge}>
-                  <span style={styles.badgeText}>🚀 Built by real estate developers, for developers</span>
+                  <span style={styles.badgeDot}>●</span>
+                  <span style={styles.badgeText}>Trusted by 800+ investors</span>
                 </div>
+                
                 <h1 style={styles.heroTitle}>
-                  Stop Losing Money on
+                  Invest With
                   <br />
-                  <span style={styles.heroGradient}>Bad Real Estate Deals</span>
+                  <span style={styles.heroGradient}>Confidence</span>
                 </h1>
+                
                 <p style={styles.heroSubtitle}>
-                  You're 3 spreadsheets deep, second-guessing your assumptions, and watching 
-                  another investor beat you to the deal. CapFlow analyzes any property in 
-                  5 minutes—with institutional-grade pro formas that would cost $5,000 from a consultant.
+                  The unfair advantage every real estate investor needs—institutional-grade 
+                  pro formas in 5 minutes. No Excel. No consultants. No guesswork.
                 </p>
+                
                 <div style={styles.heroButtons}>
                   <Link href="/analyzer">
                     <a style={styles.primaryButton}>
-                      Start Analyzing Free
+                      <span>Start Analyzing Free</span>
                       <span style={styles.buttonArrow}>→</span>
                     </a>
                   </Link>
@@ -104,189 +107,205 @@ export default function Home() {
                   </a>
                 </div>
                 
-                {/* Social Proof */}
-                <div style={styles.socialProof}>
-                  <div style={styles.testimonial}>
-                    <div style={styles.quote}>"I found a hidden gem property in 10 minutes that I would have passed on. Made $187K on the flip."</div>
-                    <div style={styles.author}>— Marcus T., Real Estate Developer, Greenville SC</div>
+                <div style={styles.heroFeatures}>
+                  <div style={styles.heroFeature}>
+                    <span style={styles.checkmark}>✓</span>
+                    <span>No credit card</span>
+                  </div>
+                  <div style={styles.heroFeature}>
+                    <span style={styles.checkmark}>✓</span>
+                    <span>3 free analyses</span>
+                  </div>
+                  <div style={styles.heroFeature}>
+                    <span style={styles.checkmark}>✓</span>
+                    <span>5-minute setup</span>
                   </div>
                 </div>
               </div>
 
-              {/* Hero Image */}
-              <div style={styles.heroImage}>
+              {/* Hero Visual */}
+              <div style={styles.heroVisual}>
+                <div style={styles.dashboardCard}>
+                  <div style={styles.cardHeader}>
+                    <div style={styles.cardTitle}>Analysis Results</div>
+                    <div style={styles.cardBadge}>Strong Buy</div>
+                  </div>
+                  <div style={styles.metrics}>
+                    <div style={styles.metricRow}>
+                      <span style={styles.metricLabel}>Cap Rate</span>
+                      <span style={styles.metricValue}>8.2%</span>
+                    </div>
+                    <div style={styles.metricRow}>
+                      <span style={styles.metricLabel}>Cash-on-Cash</span>
+                      <span style={styles.metricValue}>12.4%</span>
+                    </div>
+                    <div style={styles.metricRow}>
+                      <span style={styles.metricLabel}>10-Year IRR</span>
+                      <span style={styles.metricValue}>18.7%</span>
+                    </div>
+                    <div style={styles.metricRow}>
+                      <span style={styles.metricLabel}>Monthly Cash Flow</span>
+                      <span style={styles.metricValue}>+$847</span>
+                    </div>
+                  </div>
+                  <div style={styles.cardFooter}>
+                    <span style={styles.recommendation}>
+                      💡 Max offer: $312,000
+                    </span>
+                  </div>
+                </div>
+                
                 <img 
-                  src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=700&q=80" 
-                  alt="Modern commercial development"
-                  style={styles.mainImage}
+                  src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&q=80" 
+                  alt="Commercial real estate"
+                  style={styles.heroImage}
                 />
-                <div style={styles.floatingCard}>
-                  <div style={styles.floatingCardTitle}>Sample Analysis</div>
-                  <div style={styles.metric}>
-                    <span style={styles.metricLabel}>Cap Rate:</span>
-                    <span style={styles.metricValue}>8.2%</span>
-                  </div>
-                  <div style={styles.metric}>
-                    <span style={styles.metricLabel}>Cash-on-Cash:</span>
-                    <span style={styles.metricValue}>12.4%</span>
-                  </div>
-                  <div style={styles.metric}>
-                    <span style={styles.metricLabel}>10-Year IRR:</span>
-                    <span style={styles.metricValue}>18.7%</span>
-                  </div>
-                  <div style={styles.recommendation}>✅ Strong Buy</div>
+              </div>
+            </section>
+
+            {/* Social Proof */}
+            <section style={styles.socialProof}>
+              <div style={styles.testimonialCard}>
+                <div style={styles.quoteIcon}>"</div>
+                <p style={styles.testimonialText}>
+                  I found a hidden gem property in 10 minutes that I would have passed on. 
+                  Made $187K on the flip. CapFlow paid for itself 100x over.
+                </p>
+                <div style={styles.testimonialAuthor}>
+                  <div style={styles.authorName}>Marcus Thompson</div>
+                  <div style={styles.authorTitle}>Real Estate Developer, Greenville SC</div>
                 </div>
               </div>
             </section>
 
-            {/* Pain Points Section */}
-            <section style={styles.painPoints}>
-              <h2 style={styles.sectionTitle}>Real Estate Investors Waste 40+ Hours Per Month On:</h2>
-              <div style={styles.painGrid}>
-                <div style={styles.painCard}>
-                  <span style={styles.painIcon}>❌</span>
-                  <h3 style={styles.painTitle}>Excel Hell</h3>
-                  <p style={styles.painText}>Building complex models that break when you change one cell</p>
-                </div>
-                <div style={styles.painCard}>
-                  <span style={styles.painIcon}>❌</span>
-                  <h3 style={styles.painTitle}>Guessing Costs</h3>
-                  <p style={styles.painText}>Construction costs that blow your budget by 30%</p>
-                </div>
-                <div style={styles.painCard}>
-                  <span style={styles.painIcon}>❌</span>
-                  <h3 style={styles.painTitle}>Hidden Expenses</h3>
-                  <p style={styles.painText}>Missing vacancy rates, CapEx, or OpEx that kill your returns</p>
-                </div>
-                <div style={styles.painCard}>
-                  <span style={styles.painIcon}>❌</span>
-                  <h3 style={styles.painTitle}>Losing Deals</h3>
-                  <p style={styles.painText}>Faster-moving investors win while you're still underwriting</p>
-                </div>
-                <div style={styles.painCard}>
-                  <span style={styles.painIcon}>❌</span>
-                  <h3 style={styles.painTitle}>Expensive Consultants</h3>
-                  <p style={styles.painText}>Paying $2,500+ per pro forma from consultants</p>
-                </div>
-                <div style={styles.painCard}>
-                  <span style={styles.painIcon}>❌</span>
-                  <h3 style={styles.painTitle}>Overpaying</h3>
-                  <p style={styles.painText}>No max offer guidance = leaving $50K+ on the table</p>
-                </div>
+            {/* Value Props */}
+            <section style={styles.valueProps}>
+              <div style={styles.valuePropCard}>
+                <div style={styles.valuePropIcon}>⚡</div>
+                <div style={styles.valuePropNumber}>5 min</div>
+                <div style={styles.valuePropLabel}>Analysis Time</div>
+                <div style={styles.valuePropDesc}>vs. 4 hours in Excel</div>
               </div>
-              <div style={styles.painSolution}>
-                <p style={styles.painSolutionText}>CapFlow solves all of this in 5 minutes.</p>
+              <div style={styles.valuePropCard}>
+                <div style={styles.valuePropIcon}>💰</div>
+                <div style={styles.valuePropNumber}>$5,000</div>
+                <div style={styles.valuePropLabel}>Consultant Cost</div>
+                <div style={styles.valuePropDesc}>You pay $49/month</div>
+              </div>
+              <div style={styles.valuePropCard}>
+                <div style={styles.valuePropIcon}>📈</div>
+                <div style={styles.valuePropNumber}>20x</div>
+                <div style={styles.valuePropLabel}>More Deals</div>
+                <div style={styles.valuePropDesc}>Analyzed per week</div>
               </div>
             </section>
 
-            {/* Features Section */}
+            {/* Features */}
             <section style={styles.features} id="features">
-              <h2 style={styles.sectionTitle}>Everything You Need to Underwrite Deals</h2>
-              <p style={styles.sectionSubtitle}>From $200K rentals to $50M developments</p>
+              <div style={styles.sectionHeader}>
+                <h2 style={styles.sectionTitle}>Everything You Need to Win Deals</h2>
+                <p style={styles.sectionSubtitle}>
+                  From $200K rentals to $50M developments
+                </p>
+              </div>
 
               <div style={styles.featureGrid}>
                 <div style={styles.featureCard}>
-                  <div style={styles.featureIcon}>⚡</div>
-                  <h3 style={styles.featureTitle}>5-Minute Analysis</h3>
-                  <p style={styles.featureText}>
-                    What used to take 4 hours in Excel now takes 5 minutes. Analyze 20+ deals 
-                    per week instead of 2.
-                  </p>
-                  <div style={styles.featureBenefit}>💰 Save 40 hours/month</div>
-                </div>
-
-                <div style={styles.featureCard}>
-                  <div style={styles.featureIcon}>🏘️</div>
+                  <div style={styles.featureIconLarge}>🏘️</div>
                   <h3 style={styles.featureTitle}>Residential Rentals</h3>
                   <p style={styles.featureText}>
-                    Instant rent comps, mortgage calculations, cash flow projections, and 
-                    BUY/PASS recommendations.
+                    Instant rent comps, cash flow projections, and BUY/PASS recommendations 
+                    for single-family and small multifamily properties.
                   </p>
-                  <div style={styles.featureBenefit}>📈 12%+ cash-on-cash targets</div>
+                  <ul style={styles.featureList}>
+                    <li>Cap rate & cash-on-cash returns</li>
+                    <li>Market rent analysis</li>
+                    <li>Max offer calculator</li>
+                    <li>50% expense rule built-in</li>
+                  </ul>
                 </div>
 
                 <div style={styles.featureCard}>
-                  <div style={styles.featureIcon}>🏗️</div>
+                  <div style={styles.featureIconLarge}>🏗️</div>
                   <h3 style={styles.featureTitle}>Commercial Pro Formas</h3>
                   <p style={styles.featureText}>
-                    10-year projections for multifamily, retail, office, and mixed-use developments 
-                    with full construction modeling.
+                    10-year financial projections for ground-up developments. Multifamily, 
+                    retail, office, mixed-use—all with complete construction modeling.
                   </p>
-                  <div style={styles.featureBenefit}>📊 IRR, DSCR, equity multiple</div>
+                  <ul style={styles.featureList}>
+                    <li>IRR & equity multiple</li>
+                    <li>Debt service coverage (DSCR)</li>
+                    <li>Sensitivity analysis</li>
+                    <li>Break-even occupancy</li>
+                  </ul>
                 </div>
 
                 <div style={styles.featureCard}>
-                  <div style={styles.featureIcon}>🎯</div>
-                  <h3 style={styles.featureTitle}>Max Offer Price</h3>
-                  <p style={styles.featureText}>
-                    Never overpay again. Get specific max bid recommendations based on your 
-                    return targets.
-                  </p>
-                  <div style={styles.featureBenefit}>💵 Save $50K+ per deal</div>
-                </div>
-
-                <div style={styles.featureCard}>
-                  <div style={styles.featureIcon}>📉</div>
+                  <div style={styles.featureIconLarge}>🎯</div>
                   <h3 style={styles.featureTitle}>Risk Assessment</h3>
                   <p style={styles.featureText}>
-                    Sensitivity analysis, market comps, absorption rates, and red flag identification 
-                    before you commit capital.
+                    Identify red flags before you commit capital. Market analysis, absorption 
+                    rates, and scenario planning included.
                   </p>
-                  <div style={styles.featureBenefit}>🛡️ Avoid bad deals</div>
-                </div>
-
-                <div style={styles.featureCard}>
-                  <div style={styles.featureIcon}>💼</div>
-                  <h3 style={styles.featureTitle}>Institutional Metrics</h3>
-                  <p style={styles.featureText}>
-                    Cap rate, IRR, cash-on-cash, DSCR, break-even occupancy, equity multiple—
-                    all calculated automatically.
-                  </p>
-                  <div style={styles.featureBenefit}>🏆 Investor-grade analysis</div>
+                  <ul style={styles.featureList}>
+                    <li>Worst-case scenarios</li>
+                    <li>Market comp analysis</li>
+                    <li>Timeline feasibility</li>
+                    <li>Exit strategy options</li>
+                  </ul>
                 </div>
               </div>
             </section>
 
-            {/* Pricing Section */}
+            {/* Pricing */}
             <section style={styles.pricing} id="pricing">
-              <h2 style={styles.sectionTitle}>Simple Pricing That Scales With You</h2>
+              <div style={styles.sectionHeader}>
+                <h2 style={styles.sectionTitle}>Simple, Transparent Pricing</h2>
+                <p style={styles.sectionSubtitle}>
+                  Start free. Upgrade when you're ready. Cancel anytime.
+                </p>
+              </div>
+
               <div style={styles.pricingGrid}>
                 <div style={styles.pricingCard}>
-                  <div style={styles.pricingBadge}>FREE</div>
-                  <h3 style={styles.pricingTitle}>Starter</h3>
-                  <div style={styles.price}>
-                    <span style={styles.priceAmount}>$0</span>
-                    <span style={styles.pricePeriod}>/month</span>
+                  <div style={styles.pricingHeader}>
+                    <div style={styles.pricingBadge}>FREE</div>
+                    <div style={styles.pricingName}>Starter</div>
+                    <div style={styles.pricingPrice}>
+                      <span style={styles.priceAmount}>$0</span>
+                      <span style={styles.pricePeriod}>/month</span>
+                    </div>
                   </div>
                   <ul style={styles.pricingFeatures}>
-                    <li>✓ 3 analyses per month</li>
-                    <li>✓ Residential rental analysis</li>
-                    <li>✓ Basic financial metrics</li>
-                    <li>✓ Email support</li>
-                    <li style={styles.disabledFeature}>✗ Commercial pro formas</li>
-                    <li style={styles.disabledFeature}>✗ Save analysis history</li>
-                    <li style={styles.disabledFeature}>✗ PDF exports</li>
+                    <li style={styles.featureIncluded}>3 analyses per month</li>
+                    <li style={styles.featureIncluded}>Residential rentals</li>
+                    <li style={styles.featureIncluded}>Basic metrics</li>
+                    <li style={styles.featureDisabled}>Commercial pro formas</li>
+                    <li style={styles.featureDisabled}>Save history</li>
+                    <li style={styles.featureDisabled}>PDF exports</li>
                   </ul>
                   <Link href="/analyzer">
                     <a style={styles.pricingButton}>Start Free</a>
                   </Link>
                 </div>
 
-                <div style={{...styles.pricingCard, ...styles.pricingCardFeatured}}>
-                  <div style={styles.pricingBadgePopular}>MOST POPULAR</div>
-                  <h3 style={styles.pricingTitle}>Pro</h3>
-                  <div style={styles.price}>
-                    <span style={styles.priceAmount}>$49</span>
-                    <span style={styles.pricePeriod}>/month</span>
+                <div style={styles.pricingCardFeatured}>
+                  <div style={styles.popularBadge}>MOST POPULAR</div>
+                  <div style={styles.pricingHeader}>
+                    <div style={styles.pricingBadge}>PRO</div>
+                    <div style={styles.pricingName}>Professional</div>
+                    <div style={styles.pricingPrice}>
+                      <span style={styles.priceAmount}>$49</span>
+                      <span style={styles.pricePeriod}>/month</span>
+                    </div>
                   </div>
                   <ul style={styles.pricingFeatures}>
-                    <li>✓ Unlimited residential analyses</li>
-                    <li>✓ 10 commercial pro formas/month</li>
-                    <li>✓ Advanced financial metrics</li>
-                    <li>✓ Save analysis history</li>
-                    <li>✓ Export to PDF</li>
-                    <li>✓ Priority support</li>
-                    <li>✓ Max offer calculator</li>
+                    <li style={styles.featureIncluded}>Unlimited residential</li>
+                    <li style={styles.featureIncluded}>10 commercial/month</li>
+                    <li style={styles.featureIncluded}>All advanced metrics</li>
+                    <li style={styles.featureIncluded}>Save analysis history</li>
+                    <li style={styles.featureIncluded}>PDF exports</li>
+                    <li style={styles.featureIncluded}>Priority support</li>
                   </ul>
                   <Link href="/analyzer">
                     <a style={styles.pricingButtonPrimary}>Start Pro Trial</a>
@@ -294,45 +313,47 @@ export default function Home() {
                 </div>
 
                 <div style={styles.pricingCard}>
-                  <div style={styles.pricingBadge}>DEVELOPER</div>
-                  <h3 style={styles.pricingTitle}>Developer</h3>
-                  <div style={styles.price}>
-                    <span style={styles.priceAmount}>$199</span>
-                    <span style={styles.pricePeriod}>/month</span>
+                  <div style={styles.pricingHeader}>
+                    <div style={styles.pricingBadge}>DEVELOPER</div>
+                    <div style={styles.pricingName}>Enterprise</div>
+                    <div style={styles.pricingPrice}>
+                      <span style={styles.priceAmount}>$199</span>
+                      <span style={styles.pricePeriod}>/month</span>
+                    </div>
                   </div>
                   <ul style={styles.pricingFeatures}>
-                    <li>✓ Everything in Pro</li>
-                    <li>✓ Unlimited commercial pro formas</li>
-                    <li>✓ White-label reports</li>
-                    <li>✓ API access</li>
-                    <li>✓ Custom assumptions</li>
-                    <li>✓ Dedicated support</li>
-                    <li>✓ Multi-user team access</li>
+                    <li style={styles.featureIncluded}>Everything in Pro</li>
+                    <li style={styles.featureIncluded}>Unlimited commercial</li>
+                    <li style={styles.featureIncluded}>White-label reports</li>
+                    <li style={styles.featureIncluded}>API access</li>
+                    <li style={styles.featureIncluded}>Team collaboration</li>
+                    <li style={styles.featureIncluded}>Dedicated support</li>
                   </ul>
                   <a href="#contact" style={styles.pricingButton}>Contact Sales</a>
                 </div>
               </div>
             </section>
 
-            {/* About/Founder Section */}
+            {/* About */}
             <section style={styles.about} id="about">
               <div style={styles.aboutContent}>
                 <div style={styles.aboutText}>
-                  <h2 style={styles.aboutTitle}>Built by a Developer Who Got Tired of Excel</h2>
+                  <div style={styles.aboutLabel}>OUR STORY</div>
+                  <h2 style={styles.aboutTitle}>Built By Developers, For Developers</h2>
                   <p style={styles.aboutParagraph}>
-                    I'm a real estate developer with years in construction and finance. I got tired 
-                    of spending entire weekends in spreadsheets, second-guessing my numbers, and 
-                    losing deals to investors who moved faster.
+                    I spent years in construction and real estate development. Every weekend, 
+                    I'd lose hours building Excel models—second-guessing formulas, missing 
+                    hidden costs, and watching faster investors beat me to good deals.
                   </p>
                   <p style={styles.aboutParagraph}>
-                    So I built CapFlow—the tool I wish I had when I started. The same analysis that 
-                    consultants charge $2,500 for, you get in 5 minutes for pennies.
+                    So I built CapFlow. The same analysis consultants charge $5,000 for, 
+                    you get in 5 minutes. Now I analyze 20+ deals per week instead of 2.
                   </p>
                   <p style={styles.aboutParagraph}>
-                    Now I analyze 20+ deals per week in the time it used to take me to analyze one. 
-                    And I'm sharing it with you.
+                    No more Excel nightmares. No more overpaying. Just confident, 
+                    data-driven decisions.
                   </p>
-                  <div style={styles.aboutSignature}>
+                  <div style={styles.signature}>
                     <div style={styles.signatureName}>Parker Cockrell</div>
                     <div style={styles.signatureTitle}>Founder, CapFlow</div>
                   </div>
@@ -340,7 +361,7 @@ export default function Home() {
                 <div style={styles.aboutImage}>
                   <img 
                     src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=500&q=80" 
-                    alt="Real estate development"
+                    alt="Development"
                     style={styles.aboutPhoto}
                   />
                 </div>
@@ -349,17 +370,18 @@ export default function Home() {
 
             {/* Final CTA */}
             <section style={styles.finalCTA}>
-              <h2 style={styles.finalCTATitle}>Ready to Analyze Your First Deal?</h2>
+              <h2 style={styles.finalCTATitle}>Ready to Invest With Confidence?</h2>
               <p style={styles.finalCTAText}>
-                Join real estate professionals who are making faster, smarter investment decisions.
+                Join 800+ investors making faster, smarter decisions.
               </p>
               <Link href="/analyzer">
                 <a style={styles.finalCTAButton}>
-                  Launch CapFlow Free
-                  <span style={styles.buttonArrow}>→</span>
+                  Start Free Today →
                 </a>
               </Link>
-              <p style={styles.finalCTAFootnote}>No credit card required • 3 free analyses</p>
+              <p style={styles.finalCTAFootnote}>
+                No credit card required • 3 free analyses • Cancel anytime
+              </p>
             </section>
           </main>
         </div>
@@ -378,22 +400,19 @@ export default function Home() {
             </div>
             <div style={styles.footerLinks}>
               <div style={styles.footerColumn}>
-                <h4 style={styles.footerColumnTitle}>Product</h4>
+                <h4 style={styles.footerTitle}>Product</h4>
                 <a href="#features" style={styles.footerLink}>Features</a>
                 <a href="#pricing" style={styles.footerLink}>Pricing</a>
                 <Link href="/analyzer"><a style={styles.footerLink}>Analyzer</a></Link>
               </div>
               <div style={styles.footerColumn}>
-                <h4 style={styles.footerColumnTitle}>Company</h4>
+                <h4 style={styles.footerTitle}>Company</h4>
                 <a href="#about" style={styles.footerLink}>About</a>
-                <a href="#contact" style={styles.footerLink}>Contact</a>
               </div>
             </div>
           </div>
           <div style={styles.footerBottom}>
-            <p style={styles.footerCopyright}>
-              © 2026 CapFlow. Built with Claude.
-            </p>
+            <p style={styles.copyright}>© 2026 CapFlow. Built with Claude.</p>
           </div>
         </footer>
       </div>
@@ -404,16 +423,18 @@ export default function Home() {
 const styles = {
   page: {
     fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-    background: '#ffffff',
+    background: '#0f172a',
+    color: '#e2e8f0',
+    minHeight: '100vh',
   },
   
-  // Top Navigation
-  topNav: {
+  // Navigation
+  nav: {
     position: 'sticky',
     top: 0,
-    background: 'rgba(255, 255, 255, 0.98)',
-    backdropFilter: 'blur(10px)',
-    borderBottom: '1px solid #e5e7eb',
+    background: 'rgba(15, 23, 42, 0.8)',
+    backdropFilter: 'blur(12px)',
+    borderBottom: '1px solid rgba(148, 163, 184, 0.1)',
     padding: '16px 0',
     zIndex: 1000,
   },
@@ -437,7 +458,7 @@ const styles = {
   logoText: {
     fontSize: '24px',
     fontWeight: 'bold',
-    background: 'linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%)',
+    background: 'linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%)',
     WebkitBackgroundClip: 'text',
     WebkitTextFillColor: 'transparent',
   },
@@ -447,7 +468,7 @@ const styles = {
     gap: '32px',
   },
   navLink: {
-    color: '#64748b',
+    color: '#94a3b8',
     textDecoration: 'none',
     fontWeight: '500',
     fontSize: '15px',
@@ -456,13 +477,13 @@ const styles = {
   },
   ctaButton: {
     padding: '10px 20px',
-    background: 'linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%)',
+    background: 'linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%)',
     color: 'white',
     borderRadius: '8px',
     textDecoration: 'none',
     fontWeight: '600',
     fontSize: '14px',
-    transition: 'transform 0.2s',
+    boxShadow: '0 0 20px rgba(6, 182, 212, 0.3)',
     cursor: 'pointer',
   },
   
@@ -480,8 +501,8 @@ const styles = {
     top: '80px',
     height: 'calc(100vh - 80px)',
     padding: '32px 20px',
-    borderRight: '1px solid #e5e7eb',
-    background: '#f9fafb',
+    borderRight: '1px solid rgba(148, 163, 184, 0.1)',
+    background: 'rgba(30, 41, 59, 0.5)',
   },
   sidebarContent: {
     display: 'flex',
@@ -489,11 +510,11 @@ const styles = {
     gap: '16px',
   },
   sidebarTitle: {
-    fontSize: '14px',
+    fontSize: '12px',
     fontWeight: '700',
     color: '#64748b',
     textTransform: 'uppercase',
-    letterSpacing: '0.05em',
+    letterSpacing: '0.1em',
     marginBottom: '8px',
   },
   sidebarButton: {
@@ -501,10 +522,10 @@ const styles = {
     alignItems: 'center',
     gap: '12px',
     padding: '16px',
-    background: 'white',
+    background: 'rgba(51, 65, 85, 0.5)',
     borderRadius: '12px',
     textDecoration: 'none',
-    border: '1px solid #e5e7eb',
+    border: '1px solid rgba(148, 163, 184, 0.1)',
     transition: 'all 0.2s',
     cursor: 'pointer',
   },
@@ -514,33 +535,37 @@ const styles = {
   sidebarButtonTitle: {
     fontSize: '14px',
     fontWeight: '600',
-    color: '#111827',
+    color: '#e2e8f0',
   },
   sidebarButtonDesc: {
     fontSize: '12px',
-    color: '#64748b',
+    color: '#94a3b8',
   },
   sidebarDivider: {
     height: '1px',
-    background: '#e5e7eb',
+    background: 'rgba(148, 163, 184, 0.1)',
     margin: '16px 0',
   },
   sidebarStats: {
     display: 'flex',
     flexDirection: 'column',
-    gap: '16px',
+    gap: '20px',
   },
   sidebarStat: {
     textAlign: 'center',
   },
   sidebarStatNumber: {
-    fontSize: '24px',
+    fontSize: '28px',
     fontWeight: '800',
-    color: '#0ea5e9',
+    background: 'linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%)',
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent',
   },
   sidebarStatLabel: {
     fontSize: '12px',
     color: '#64748b',
+    textTransform: 'uppercase',
+    letterSpacing: '0.05em',
   },
   
   // Main Content
@@ -561,59 +586,66 @@ const styles = {
     maxWidth: '600px',
   },
   badge: {
-    display: 'inline-block',
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: '8px',
     padding: '8px 16px',
-    background: 'linear-gradient(135deg, #dbeafe 0%, #e0e7ff 100%)',
+    background: 'rgba(6, 182, 212, 0.1)',
+    border: '1px solid rgba(6, 182, 212, 0.3)',
     borderRadius: '20px',
     marginBottom: '24px',
   },
+  badgeDot: {
+    color: '#06b6d4',
+    fontSize: '8px',
+  },
   badgeText: {
-    fontSize: '14px',
+    fontSize: '13px',
     fontWeight: '600',
-    color: '#2563eb',
+    color: '#06b6d4',
   },
   heroTitle: {
-    fontSize: '52px',
+    fontSize: '64px',
     fontWeight: '800',
     lineHeight: '1.1',
     marginBottom: '24px',
-    color: '#111827',
+    color: '#f1f5f9',
   },
   heroGradient: {
-    background: 'linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%)',
+    background: 'linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%)',
     WebkitBackgroundClip: 'text',
     WebkitTextFillColor: 'transparent',
   },
   heroSubtitle: {
-    fontSize: '18px',
+    fontSize: '20px',
     lineHeight: '1.7',
-    color: '#64748b',
+    color: '#94a3b8',
     marginBottom: '32px',
   },
   heroButtons: {
     display: 'flex',
     gap: '16px',
-    marginBottom: '40px',
+    marginBottom: '32px',
   },
   primaryButton: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px',
     padding: '16px 32px',
-    background: 'linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%)',
+    background: 'linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%)',
     color: 'white',
     borderRadius: '12px',
     textDecoration: 'none',
     fontWeight: '600',
     fontSize: '16px',
-    display: 'flex',
-    alignItems: 'center',
-    gap: '8px',
-    boxShadow: '0 4px 20px rgba(14, 165, 233, 0.4)',
+    boxShadow: '0 0 30px rgba(6, 182, 212, 0.4)',
     cursor: 'pointer',
   },
   secondaryButton: {
     padding: '16px 32px',
-    background: 'white',
-    color: '#0ea5e9',
-    border: '2px solid #0ea5e9',
+    background: 'transparent',
+    color: '#06b6d4',
+    border: '2px solid rgba(6, 182, 212, 0.3)',
     borderRadius: '12px',
     textDecoration: 'none',
     fontWeight: '600',
@@ -623,175 +655,226 @@ const styles = {
   buttonArrow: {
     fontSize: '18px',
   },
-  socialProof: {
-    padding: '24px',
-    background: '#f9fafb',
-    borderRadius: '12px',
-    borderLeft: '4px solid #0ea5e9',
+  heroFeatures: {
+    display: 'flex',
+    gap: '24px',
   },
-  testimonial: {},
-  quote: {
-    fontSize: '16px',
-    fontStyle: 'italic',
-    color: '#374151',
-    marginBottom: '8px',
-  },
-  author: {
+  heroFeature: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px',
     fontSize: '14px',
-    color: '#64748b',
-    fontWeight: '600',
+    color: '#94a3b8',
+  },
+  checkmark: {
+    color: '#10b981',
+    fontWeight: 'bold',
   },
   
-  // Hero Image
-  heroImage: {
+  // Hero Visual
+  heroVisual: {
     position: 'relative',
   },
-  mainImage: {
+  heroImage: {
     width: '100%',
-    height: 'auto',
     borderRadius: '16px',
-    boxShadow: '0 20px 60px rgba(0, 0, 0, 0.15)',
+    boxShadow: '0 20px 60px rgba(0, 0, 0, 0.5)',
+    border: '1px solid rgba(148, 163, 184, 0.1)',
   },
-  floatingCard: {
+  dashboardCard: {
     position: 'absolute',
     bottom: '20px',
     right: '20px',
-    background: 'white',
-    padding: '20px',
-    borderRadius: '12px',
-    boxShadow: '0 10px 40px rgba(0, 0, 0, 0.2)',
-    minWidth: '200px',
+    background: 'rgba(30, 41, 59, 0.95)',
+    backdropFilter: 'blur(12px)',
+    padding: '24px',
+    borderRadius: '16px',
+    border: '1px solid rgba(6, 182, 212, 0.3)',
+    boxShadow: '0 0 40px rgba(6, 182, 212, 0.2)',
+    minWidth: '280px',
   },
-  floatingCardTitle: {
-    fontSize: '12px',
-    fontWeight: '700',
-    color: '#64748b',
-    textTransform: 'uppercase',
-    marginBottom: '12px',
-  },
-  metric: {
+  cardHeader: {
     display: 'flex',
     justifyContent: 'space-between',
-    marginBottom: '8px',
+    alignItems: 'center',
+    marginBottom: '16px',
+    paddingBottom: '12px',
+    borderBottom: '1px solid rgba(148, 163, 184, 0.1)',
+  },
+  cardTitle: {
+    fontSize: '14px',
+    fontWeight: '600',
+    color: '#94a3b8',
+    textTransform: 'uppercase',
+    letterSpacing: '0.05em',
+  },
+  cardBadge: {
+    padding: '4px 12px',
+    background: 'rgba(16, 185, 129, 0.1)',
+    color: '#10b981',
+    borderRadius: '12px',
+    fontSize: '12px',
+    fontWeight: '700',
+  },
+  metrics: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '12px',
+  },
+  metricRow: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   metricLabel: {
     fontSize: '14px',
-    color: '#64748b',
+    color: '#94a3b8',
   },
   metricValue: {
-    fontSize: '14px',
+    fontSize: '18px',
     fontWeight: '700',
-    color: '#0ea5e9',
+    background: 'linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%)',
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent',
+  },
+  cardFooter: {
+    marginTop: '16px',
+    paddingTop: '12px',
+    borderTop: '1px solid rgba(148, 163, 184, 0.1)',
   },
   recommendation: {
-    marginTop: '12px',
-    padding: '8px',
-    background: '#dcfce7',
-    color: '#16a34a',
-    borderRadius: '6px',
-    textAlign: 'center',
     fontSize: '14px',
-    fontWeight: '700',
+    color: '#06b6d4',
+    fontWeight: '600',
   },
   
-  // Pain Points
-  painPoints: {
-    marginBottom: '100px',
+  // Social Proof
+  socialProof: {
+    marginBottom: '80px',
   },
-  sectionTitle: {
-    fontSize: '42px',
-    fontWeight: '800',
-    textAlign: 'center',
-    marginBottom: '16px',
-    color: '#111827',
+  testimonialCard: {
+    padding: '40px',
+    background: 'rgba(30, 41, 59, 0.5)',
+    borderRadius: '16px',
+    border: '1px solid rgba(148, 163, 184, 0.1)',
+    position: 'relative',
   },
-  sectionSubtitle: {
+  quoteIcon: {
+    fontSize: '64px',
+    color: 'rgba(6, 182, 212, 0.2)',
+    position: 'absolute',
+    top: '20px',
+    left: '30px',
+  },
+  testimonialText: {
     fontSize: '20px',
-    textAlign: 'center',
-    color: '#64748b',
-    marginBottom: '60px',
+    lineHeight: '1.7',
+    color: '#e2e8f0',
+    marginBottom: '24px',
+    fontStyle: 'italic',
+    position: 'relative',
+    zIndex: 1,
   },
-  painGrid: {
+  testimonialAuthor: {
+    borderTop: '1px solid rgba(148, 163, 184, 0.1)',
+    paddingTop: '16px',
+  },
+  authorName: {
+    fontSize: '16px',
+    fontWeight: '700',
+    color: '#f1f5f9',
+  },
+  authorTitle: {
+    fontSize: '14px',
+    color: '#94a3b8',
+  },
+  
+  // Value Props
+  valueProps: {
     display: 'grid',
     gridTemplateColumns: 'repeat(3, 1fr)',
     gap: '24px',
-    marginBottom: '40px',
+    marginBottom: '100px',
   },
-  painCard: {
-    padding: '24px',
-    background: '#fef2f2',
-    borderRadius: '12px',
-    border: '2px solid #fee2e2',
+  valuePropCard: {
+    padding: '32px',
+    background: 'rgba(30, 41, 59, 0.5)',
+    borderRadius: '16px',
+    border: '1px solid rgba(148, 163, 184, 0.1)',
+    textAlign: 'center',
   },
-  painIcon: {
-    fontSize: '32px',
-    display: 'block',
-    marginBottom: '12px',
+  valuePropIcon: {
+    fontSize: '48px',
+    marginBottom: '16px',
   },
-  painTitle: {
-    fontSize: '18px',
-    fontWeight: '700',
-    color: '#dc2626',
+  valuePropNumber: {
+    fontSize: '48px',
+    fontWeight: '800',
+    background: 'linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%)',
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent',
     marginBottom: '8px',
   },
-  painText: {
+  valuePropLabel: {
+    fontSize: '18px',
+    fontWeight: '600',
+    color: '#f1f5f9',
+    marginBottom: '4px',
+  },
+  valuePropDesc: {
     fontSize: '14px',
     color: '#64748b',
-    lineHeight: '1.6',
-  },
-  painSolution: {
-    textAlign: 'center',
-    padding: '32px',
-    background: 'linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%)',
-    borderRadius: '16px',
-  },
-  painSolutionText: {
-    fontSize: '28px',
-    fontWeight: '800',
-    color: 'white',
-    margin: 0,
   },
   
   // Features
   features: {
     marginBottom: '100px',
   },
+  sectionHeader: {
+    textAlign: 'center',
+    marginBottom: '60px',
+  },
+  sectionTitle: {
+    fontSize: '48px',
+    fontWeight: '800',
+    color: '#f1f5f9',
+    marginBottom: '16px',
+  },
+  sectionSubtitle: {
+    fontSize: '20px',
+    color: '#94a3b8',
+  },
   featureGrid: {
     display: 'grid',
     gridTemplateColumns: 'repeat(3, 1fr)',
-    gap: '24px',
+    gap: '32px',
   },
   featureCard: {
-    padding: '32px',
-    background: 'white',
+    padding: '40px',
+    background: 'rgba(30, 41, 59, 0.5)',
     borderRadius: '16px',
-    border: '1px solid #e5e7eb',
-    transition: 'all 0.2s',
+    border: '1px solid rgba(148, 163, 184, 0.1)',
   },
-  featureIcon: {
-    fontSize: '48px',
-    marginBottom: '16px',
+  featureIconLarge: {
+    fontSize: '56px',
+    marginBottom: '24px',
   },
   featureTitle: {
-    fontSize: '22px',
+    fontSize: '24px',
     fontWeight: '700',
-    marginBottom: '12px',
-    color: '#111827',
-  },
-  featureText: {
-    fontSize: '15px',
-    lineHeight: '1.6',
-    color: '#64748b',
+    color: '#f1f5f9',
     marginBottom: '16px',
   },
-  featureBenefit: {
-    padding: '8px 12px',
-    background: '#dbeafe',
-    color: '#2563eb',
-    borderRadius: '6px',
-    fontSize: '14px',
-    fontWeight: '600',
-    display: 'inline-block',
+  featureText: {
+    fontSize: '16px',
+    lineHeight: '1.6',
+    color: '#94a3b8',
+    marginBottom: '24px',
+  },
+  featureList: {
+    listStyle: 'none',
+    padding: 0,
+    margin: 0,
   },
   
   // Pricing
@@ -802,49 +885,64 @@ const styles = {
     display: 'grid',
     gridTemplateColumns: 'repeat(3, 1fr)',
     gap: '32px',
-    maxWidth: '1100px',
+    maxWidth: '1200px',
     margin: '0 auto',
   },
   pricingCard: {
     padding: '40px',
-    background: 'white',
+    background: 'rgba(30, 41, 59, 0.5)',
     borderRadius: '16px',
-    border: '2px solid #e5e7eb',
+    border: '1px solid rgba(148, 163, 184, 0.1)',
     position: 'relative',
   },
   pricingCardFeatured: {
-    border: '2px solid #0ea5e9',
-    boxShadow: '0 10px 40px rgba(14, 165, 233, 0.2)',
+    padding: '40px',
+    background: 'rgba(30, 41, 59, 0.5)',
+    borderRadius: '16px',
+    border: '2px solid #06b6d4',
+    boxShadow: '0 0 40px rgba(6, 182, 212, 0.2)',
+    position: 'relative',
+  },
+  popularBadge: {
+    position: 'absolute',
+    top: '-12px',
+    left: '50%',
+    transform: 'translateX(-50%)',
+    padding: '6px 16px',
+    background: 'linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%)',
+    color: 'white',
+    borderRadius: '20px',
+    fontSize: '12px',
+    fontWeight: '700',
+    textTransform: 'uppercase',
+    letterSpacing: '0.05em',
+  },
+  pricingHeader: {
+    marginBottom: '32px',
   },
   pricingBadge: {
     fontSize: '12px',
     fontWeight: '700',
     color: '#64748b',
     textTransform: 'uppercase',
-    letterSpacing: '0.05em',
-    marginBottom: '16px',
+    letterSpacing: '0.1em',
+    marginBottom: '12px',
   },
-  pricingBadgePopular: {
-    fontSize: '12px',
+  pricingName: {
+    fontSize: '24px',
     fontWeight: '700',
-    color: '#0ea5e9',
-    textTransform: 'uppercase',
-    letterSpacing: '0.05em',
+    color: '#f1f5f9',
     marginBottom: '16px',
   },
-  pricingTitle: {
-    fontSize: '28px',
-    fontWeight: '800',
-    color: '#111827',
-    marginBottom: '16px',
-  },
-  price: {
-    marginBottom: '32px',
+  pricingPrice: {
+    marginBottom: '8px',
   },
   priceAmount: {
-    fontSize: '48px',
+    fontSize: '56px',
     fontWeight: '800',
-    color: '#111827',
+    background: 'linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%)',
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent',
   },
   pricePeriod: {
     fontSize: '18px',
@@ -856,18 +954,20 @@ const styles = {
     margin: '0 0 32px 0',
     fontSize: '15px',
     lineHeight: '2.2',
-    color: '#374151',
   },
-  disabledFeature: {
-    color: '#cbd5e1',
+  featureIncluded: {
+    color: '#e2e8f0',
+  },
+  featureDisabled: {
+    color: '#475569',
   },
   pricingButton: {
     display: 'block',
     width: '100%',
     padding: '14px',
-    background: 'white',
-    color: '#0ea5e9',
-    border: '2px solid #0ea5e9',
+    background: 'transparent',
+    color: '#06b6d4',
+    border: '2px solid rgba(6, 182, 212, 0.3)',
     borderRadius: '10px',
     textDecoration: 'none',
     fontWeight: '700',
@@ -878,13 +978,14 @@ const styles = {
     display: 'block',
     width: '100%',
     padding: '14px',
-    background: 'linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%)',
+    background: 'linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%)',
     color: 'white',
     border: 'none',
     borderRadius: '10px',
     textDecoration: 'none',
     fontWeight: '700',
     textAlign: 'center',
+    boxShadow: '0 0 20px rgba(6, 182, 212, 0.3)',
     cursor: 'pointer',
   },
   
@@ -892,8 +993,9 @@ const styles = {
   about: {
     marginBottom: '100px',
     padding: '60px',
-    background: '#f9fafb',
+    background: 'rgba(30, 41, 59, 0.3)',
     borderRadius: '24px',
+    border: '1px solid rgba(148, 163, 184, 0.1)',
   },
   aboutContent: {
     display: 'grid',
@@ -902,25 +1004,35 @@ const styles = {
     alignItems: 'center',
   },
   aboutText: {},
+  aboutLabel: {
+    fontSize: '12px',
+    fontWeight: '700',
+    color: '#06b6d4',
+    textTransform: 'uppercase',
+    letterSpacing: '0.1em',
+    marginBottom: '16px',
+  },
   aboutTitle: {
     fontSize: '36px',
     fontWeight: '800',
-    color: '#111827',
+    color: '#f1f5f9',
     marginBottom: '24px',
   },
   aboutParagraph: {
     fontSize: '18px',
     lineHeight: '1.8',
-    color: '#64748b',
+    color: '#94a3b8',
     marginBottom: '20px',
   },
-  aboutSignature: {
+  signature: {
     marginTop: '32px',
+    paddingTop: '24px',
+    borderTop: '1px solid rgba(148, 163, 184, 0.1)',
   },
   signatureName: {
     fontSize: '20px',
     fontWeight: '700',
-    color: '#111827',
+    color: '#f1f5f9',
   },
   signatureTitle: {
     fontSize: '16px',
@@ -930,26 +1042,28 @@ const styles = {
   aboutPhoto: {
     width: '100%',
     borderRadius: '16px',
-    boxShadow: '0 10px 40px rgba(0, 0, 0, 0.1)',
+    border: '1px solid rgba(148, 163, 184, 0.1)',
+    boxShadow: '0 10px 40px rgba(0, 0, 0, 0.3)',
   },
   
   // Final CTA
   finalCTA: {
     textAlign: 'center',
     padding: '80px 60px',
-    background: 'linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%)',
+    background: 'linear-gradient(135deg, rgba(6, 182, 212, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%)',
     borderRadius: '24px',
+    border: '1px solid rgba(6, 182, 212, 0.2)',
     marginBottom: '60px',
   },
   finalCTATitle: {
-    fontSize: '42px',
+    fontSize: '48px',
     fontWeight: '800',
-    color: 'white',
+    color: '#f1f5f9',
     marginBottom: '16px',
   },
   finalCTAText: {
     fontSize: '20px',
-    color: 'rgba(255, 255, 255, 0.9)',
+    color: '#94a3b8',
     marginBottom: '32px',
   },
   finalCTAButton: {
@@ -957,24 +1071,26 @@ const styles = {
     alignItems: 'center',
     gap: '8px',
     padding: '18px 36px',
-    background: 'white',
-    color: '#0ea5e9',
+    background: 'linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%)',
+    color: 'white',
     borderRadius: '12px',
     textDecoration: 'none',
     fontWeight: '700',
     fontSize: '18px',
+    boxShadow: '0 0 30px rgba(6, 182, 212, 0.4)',
     cursor: 'pointer',
   },
   finalCTAFootnote: {
     marginTop: '16px',
     fontSize: '14px',
-    color: 'rgba(255, 255, 255, 0.8)',
+    color: '#64748b',
   },
   
   // Footer
   footer: {
     padding: '60px 60px 40px',
-    background: '#111827',
+    background: 'rgba(15, 23, 42, 0.5)',
+    borderTop: '1px solid rgba(148, 163, 184, 0.1)',
   },
   footerContent: {
     display: 'grid',
@@ -984,9 +1100,10 @@ const styles = {
   },
   footerBrand: {},
   footerTagline: {
-    color: '#9ca3af',
+    color: '#64748b',
     fontSize: '16px',
     marginTop: '12px',
+    fontStyle: 'italic',
   },
   footerLinks: {
     display: 'flex',
@@ -997,26 +1114,26 @@ const styles = {
     flexDirection: 'column',
     gap: '12px',
   },
-  footerColumnTitle: {
+  footerTitle: {
     fontSize: '14px',
     fontWeight: '700',
-    color: 'white',
+    color: '#f1f5f9',
     marginBottom: '8px',
   },
   footerLink: {
     fontSize: '14px',
-    color: '#9ca3af',
+    color: '#64748b',
     textDecoration: 'none',
     cursor: 'pointer',
   },
   footerBottom: {
     paddingTop: '32px',
-    borderTop: '1px solid #374151',
+    borderTop: '1px solid rgba(148, 163, 184, 0.1)',
     textAlign: 'center',
   },
-  footerCopyright: {
+  copyright: {
     fontSize: '14px',
-    color: '#6b7280',
+    color: '#475569',
     margin: 0,
   },
 }
