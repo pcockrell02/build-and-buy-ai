@@ -1,4 +1,4 @@
-javascriptimport { useState } from 'react'
+import { useState } from 'react'
 import Head from 'next/head'
 
 export default function Home() {
