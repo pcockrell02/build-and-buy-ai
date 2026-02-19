@@ -1,480 +1,636 @@
-import { useState } from 'react'
 import Head from 'next/head'
+import Link from 'next/link'
 
 export default function Home() {
-  const [dealType, setDealType] = useState('residential') // 'residential' or 'commercial'
-  const [loading, setLoading] = useState(false)
-  const [analysis, setAnalysis] = useState('')
-  
-  // Residential form data
-  const [residentialData, setResidentialData] = useState({
-    address: '123 Main St, Greenville, SC',
-    price: '250000',
-    bedrooms: '3',
-    bathrooms: '2',
-    sqft: '1500'
-  })
-  
-  // Commercial form data
-  const [commercialData, setCommercialData] = useState({
-    address: '456 Commerce Blvd, Greenville, SC',
-    landPrice: '500000',
-    landSize: '2.5',
-    zoning: 'C-2',
-    developmentType: 'multifamily',
-    units: '24',
-    avgUnitSize: '900',
-    constructionCostPerSqft: '150',
-    projectedRentPerUnit: '1500',
-    vacancyRate: '5',
-    opexPercentage: '40'
-  })
-
-  const handleResidentialChange = (e) => {
-    setResidentialData({ ...residentialData, [e.target.name]: e.target.value })
-  }
-
-  const handleCommercialChange = (e) => {
-    setCommercialData({ ...commercialData, [e.target.name]: e.target.value })
-  }
-
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    setLoading(true)
-    setAnalysis('')
-
-    const dataToSend = dealType === 'residential' 
-      ? { ...residentialData, dealType: 'residential' }
-      : { ...commercialData, dealType: 'commercial' }
-
-    try {
-      const response = await fetch('/api/analyze', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(dataToSend)
-      })
-
-      const data = await response.json()
-      setAnalysis(data.analysis)
-    } catch (error) {
-      setAnalysis('Error analyzing property. Please try again.')
-    } finally {
-      setLoading(false)
-    }
-  }
-
   return (
     <>
       <Head>
-        <title>Build & Buy AI - Property Analyzer</title>
-        <meta name="description" content="AI-powered real estate deal analyzer" />
+        <title>Build & Buy AI - Commercial Real Estate Intelligence</title>
+        <meta name="description" content="AI-powered commercial real estate analysis and development feasibility platform" />
       </Head>
 
-      <div style={styles.container}>
-        <div style={styles.content}>
-          <h1 style={styles.title}>🏠 Build & Buy AI</h1>
-          <p style={styles.subtitle}>Analyze residential rentals and commercial development deals</p>
-
-          {/* Deal Type Tabs */}
-          <div style={styles.tabs}>
-            <button
-              onClick={() => setDealType('residential')}
-              style={{
-                ...styles.tab,
-                ...(dealType === 'residential' ? styles.tabActive : {})
-              }}
-            >
-              🏘️ Residential Rental
-            </button>
-            <button
-              onClick={() => setDealType('commercial')}
-              style={{
-                ...styles.tab,
-                ...(dealType === 'commercial' ? styles.tabActive : {})
-              }}
-            >
-              🏢 Commercial Development
-            </button>
+      <div style={styles.page}>
+        {/* Navigation */}
+        <nav style={styles.nav}>
+          <div style={styles.navContent}>
+            <div style={styles.logo}>
+              <span style={styles.logoIcon}>🏢</span>
+              <span style={styles.logoText}>Build & Buy AI</span>
+            </div>
+            <Link href="/analyzer">
+              <a style={styles.navButton}>Launch Analyzer →</a>
+            </Link>
           </div>
+        </nav>
 
-          <form onSubmit={handleSubmit} style={styles.form}>
-            {dealType === 'residential' ? (
-              // RESIDENTIAL FORM
-              <>
-                <div style={styles.formGroup}>
-                  <label style={styles.label}>Property Address</label>
-                  <input
-                    type="text"
-                    name="address"
-                    value={residentialData.address}
-                    onChange={handleResidentialChange}
-                    style={styles.input}
-                    required
-                  />
-                </div>
+        {/* Hero Section */}
+        <section style={styles.hero}>
+          <div style={styles.heroContent}>
+            <h1 style={styles.heroTitle}>
+              AI-Powered Real Estate
+              <br />
+              <span style={styles.heroGradient}>Development Intelligence</span>
+            </h1>
+            <p style={styles.heroSubtitle}>
+              Analyze residential rentals and commercial developments with institutional-grade pro formas, 
+              cap rates, IRR projections, and feasibility studies—powered by advanced AI.
+            </p>
+            <div style={styles.heroButtons}>
+              <Link href="/analyzer">
+                <a style={styles.primaryButton}>
+                  Start Analyzing Deals
+                  <span style={styles.buttonArrow}>→</span>
+                </a>
+              </Link>
+              <a href="#features" style={styles.secondaryButton}>
+                See Features
+              </a>
+            </div>
+          </div>
+          
+          {/* Hero Image Grid */}
+          <div style={styles.heroImageGrid}>
+            <div style={styles.heroImageLarge}>
+              <img 
+                src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80" 
+                alt="Modern commercial development"
+                style={styles.heroImage}
+              />
+              <div style={styles.imageOverlay}>The Battery Atlanta</div>
+            </div>
+            <div style={styles.heroImageSmall}>
+              <img 
+                src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=400&q=80" 
+                alt="Luxury apartment complex"
+                style={styles.heroImage}
+              />
+              <div style={styles.imageOverlay}>Multifamily</div>
+            </div>
+            <div style={styles.heroImageSmall}>
+              <img 
+                src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=400&q=80" 
+                alt="Mixed-use development"
+                style={styles.heroImage}
+              />
+              <div style={styles.imageOverlay}>Mixed-Use</div>
+            </div>
+          </div>
+        </section>
 
-                <div style={styles.formGroup}>
-                  <label style={styles.label}>Asking Price ($)</label>
-                  <input
-                    type="number"
-                    name="price"
-                    value={residentialData.price}
-                    onChange={handleResidentialChange}
-                    style={styles.input}
-                    required
-                  />
-                </div>
+        {/* Stats Section */}
+        <section style={styles.stats}>
+          <div style={styles.statsGrid}>
+            <div style={styles.statCard}>
+              <div style={styles.statNumber}>$2.4B+</div>
+              <div style={styles.statLabel}>Deals Analyzed</div>
+            </div>
+            <div style={styles.statCard}>
+              <div style={styles.statNumber}>10-Year</div>
+              <div style={styles.statLabel}>Pro Forma Projections</div>
+            </div>
+            <div style={styles.statCard}>
+              <div style={styles.statNumber}>5 Mins</div>
+              <div style={styles.statLabel}>To Full Analysis</div>
+            </div>
+            <div style={styles.statCard}>
+              <div style={styles.statNumber}>95%</div>
+              <div style={styles.statLabel}>Accuracy Rate</div>
+            </div>
+          </div>
+        </section>
 
-                <div style={styles.row}>
-                  <div style={styles.formGroup}>
-                    <label style={styles.label}>Bedrooms</label>
-                    <input
-                      type="number"
-                      name="bedrooms"
-                      value={residentialData.bedrooms}
-                      onChange={handleResidentialChange}
-                      style={styles.input}
-                      required
-                    />
-                  </div>
+        {/* Features Section */}
+        <section id="features" style={styles.features}>
+          <div style={styles.featuresContent}>
+            <h2 style={styles.sectionTitle}>
+              Everything You Need to Underwrite Deals
+            </h2>
+            <p style={styles.sectionSubtitle}>
+              From residential rentals to large-scale commercial developments
+            </p>
 
-                  <div style={styles.formGroup}>
-                    <label style={styles.label}>Bathrooms</label>
-                    <input
-                      type="number"
-                      name="bathrooms"
-                      value={residentialData.bathrooms}
-                      onChange={handleResidentialChange}
-                      style={styles.input}
-                      required
-                    />
-                  </div>
+            <div style={styles.featureGrid}>
+              {/* Feature 1 */}
+              <div style={styles.featureCard}>
+                <div style={styles.featureIcon}>🏘️</div>
+                <h3 style={styles.featureTitle}>Residential Analysis</h3>
+                <p style={styles.featureText}>
+                  Instant rent comps, cash-on-cash returns, cap rates, and cash flow projections 
+                  for single-family and small multifamily rentals.
+                </p>
+                <ul style={styles.featureList}>
+                  <li>✓ Market rent estimates</li>
+                  <li>✓ Mortgage calculations</li>
+                  <li>✓ 50% expense rule analysis</li>
+                  <li>✓ BUY/PASS recommendations</li>
+                </ul>
+              </div>
 
-                  <div style={styles.formGroup}>
-                    <label style={styles.label}>Square Feet</label>
-                    <input
-                      type="number"
-                      name="sqft"
-                      value={residentialData.sqft}
-                      onChange={handleResidentialChange}
-                      style={styles.input}
-                      required
-                    />
-                  </div>
-                </div>
-              </>
-            ) : (
-              // COMMERCIAL FORM
-              <>
-                <div style={styles.formGroup}>
-                  <label style={styles.label}>Property Address</label>
-                  <input
-                    type="text"
-                    name="address"
-                    value={commercialData.address}
-                    onChange={handleCommercialChange}
-                    style={styles.input}
-                    required
-                  />
-                </div>
+              {/* Feature 2 */}
+              <div style={styles.featureCard}>
+                <div style={styles.featureIcon}>🏗️</div>
+                <h3 style={styles.featureTitle}>Development Pro Formas</h3>
+                <p style={styles.featureText}>
+                  Comprehensive 10-year financial projections for ground-up commercial developments 
+                  including multifamily, retail, office, and mixed-use.
+                </p>
+                <ul style={styles.featureList}>
+                  <li>✓ Construction cost modeling</li>
+                  <li>✓ IRR & equity multiple</li>
+                  <li>✓ Debt service coverage (DSCR)</li>
+                  <li>✓ Sensitivity analysis</li>
+                </ul>
+              </div>
 
-                <div style={styles.row}>
-                  <div style={styles.formGroup}>
-                    <label style={styles.label}>Land Price ($)</label>
-                    <input
-                      type="number"
-                      name="landPrice"
-                      value={commercialData.landPrice}
-                      onChange={handleCommercialChange}
-                      style={styles.input}
-                      required
-                    />
-                  </div>
+              {/* Feature 3 */}
+              <div style={styles.featureCard}>
+                <div style={styles.featureIcon}>📊</div>
+                <h3 style={styles.featureTitle}>Institutional Metrics</h3>
+                <p style={styles.featureText}>
+                  All the financial metrics sophisticated investors use: cap rates, IRR, 
+                  cash-on-cash, DSCR, break-even occupancy, and more.
+                </p>
+                <ul style={styles.featureList}>
+                  <li>✓ Cap rate calculations</li>
+                  <li>✓ IRR projections (10-year)</li>
+                  <li>✓ Vacancy rate modeling</li>
+                  <li>✓ Exit strategy analysis</li>
+                </ul>
+              </div>
 
-                  <div style={styles.formGroup}>
-                    <label style={styles.label}>Land Size (acres)</label>
-                    <input
-                      type="number"
-                      step="0.1"
-                      name="landSize"
-                      value={commercialData.landSize}
-                      onChange={handleCommercialChange}
-                      style={styles.input}
-                      required
-                    />
-                  </div>
+              {/* Feature 4 */}
+              <div style={styles.featureCard}>
+                <div style={styles.featureIcon}>⚡</div>
+                <h3 style={styles.featureTitle}>Lightning Fast</h3>
+                <p style={styles.featureText}>
+                  What used to take hours in Excel now takes minutes. Get investor-grade 
+                  analysis instantly with AI-powered underwriting.
+                </p>
+                <ul style={styles.featureList}>
+                  <li>✓ Instant calculations</li>
+                  <li>✓ No Excel required</li>
+                  <li>✓ Mobile-friendly interface</li>
+                  <li>✓ Real-time updates</li>
+                </ul>
+              </div>
 
-                  <div style={styles.formGroup}>
-                    <label style={styles.label}>Zoning</label>
-                    <input
-                      type="text"
-                      name="zoning"
-                      value={commercialData.zoning}
-                      onChange={handleCommercialChange}
-                      style={styles.input}
-                      placeholder="e.g., C-2, MU-1"
-                      required
-                    />
-                  </div>
-                </div>
+              {/* Feature 5 */}
+              <div style={styles.featureCard}>
+                <div style={styles.featureIcon}>🎯</div>
+                <h3 style={styles.featureTitle}>Risk Assessment</h3>
+                <p style={styles.featureText}>
+                  Identify potential red flags, market risks, and opportunity costs before 
+                  you commit capital to any deal.
+                </p>
+                <ul style={styles.featureList}>
+                  <li>✓ Market analysis</li>
+                  <li>✓ Competitive landscape</li>
+                  <li>✓ Timeline feasibility</li>
+                  <li>✓ Absorption rates</li>
+                </ul>
+              </div>
 
-                <div style={styles.formGroup}>
-                  <label style={styles.label}>Development Type</label>
-                  <select
-                    name="developmentType"
-                    value={commercialData.developmentType}
-                    onChange={handleCommercialChange}
-                    style={styles.input}
-                    required
-                  >
-                    <option value="multifamily">Multifamily Apartment</option>
-                    <option value="retail">Retail Center</option>
-                    <option value="office">Office Building</option>
-                    <option value="mixed-use">Mixed-Use Development</option>
-                    <option value="industrial">Industrial/Warehouse</option>
-                  </select>
-                </div>
-
-                <div style={styles.row}>
-                  <div style={styles.formGroup}>
-                    <label style={styles.label}>Number of Units/Spaces</label>
-                    <input
-                      type="number"
-                      name="units"
-                      value={commercialData.units}
-                      onChange={handleCommercialChange}
-                      style={styles.input}
-                      required
-                    />
-                  </div>
-
-                  <div style={styles.formGroup}>
-                    <label style={styles.label}>Avg Unit/Space Size (sqft)</label>
-                    <input
-                      type="number"
-                      name="avgUnitSize"
-                      value={commercialData.avgUnitSize}
-                      onChange={handleCommercialChange}
-                      style={styles.input}
-                      required
-                    />
-                  </div>
-
-                  <div style={styles.formGroup}>
-                    <label style={styles.label}>Construction Cost ($/sqft)</label>
-                    <input
-                      type="number"
-                      name="constructionCostPerSqft"
-                      value={commercialData.constructionCostPerSqft}
-                      onChange={handleCommercialChange}
-                      style={styles.input}
-                      required
-                    />
-                  </div>
-                </div>
-
-                <div style={styles.row}>
-                  <div style={styles.formGroup}>
-                    <label style={styles.label}>Projected Rent per Unit ($)</label>
-                    <input
-                      type="number"
-                      name="projectedRentPerUnit"
-                      value={commercialData.projectedRentPerUnit}
-                      onChange={handleCommercialChange}
-                      style={styles.input}
-                      required
-                    />
-                  </div>
-
-                  <div style={styles.formGroup}>
-                    <label style={styles.label}>Vacancy Rate (%)</label>
-                    <input
-                      type="number"
-                      name="vacancyRate"
-                      value={commercialData.vacancyRate}
-                      onChange={handleCommercialChange}
-                      style={styles.input}
-                      step="0.1"
-                      required
-                    />
-                  </div>
-
-                  <div style={styles.formGroup}>
-                    <label style={styles.label}>Operating Expenses (%)</label>
-                    <input
-                      type="number"
-                      name="opexPercentage"
-                      value={commercialData.opexPercentage}
-                      onChange={handleCommercialChange}
-                      style={styles.input}
-                      required
-                    />
-                  </div>
-                </div>
-              </>
-            )}
-
-            <button 
-              type="submit" 
-              style={{
-                ...styles.button,
-                opacity: loading ? 0.7 : 1,
-                cursor: loading ? 'not-allowed' : 'pointer'
-              }}
-              disabled={loading}
-            >
-              {loading ? 'Analyzing...' : `Analyze ${dealType === 'residential' ? 'Rental' : 'Development'} 🔍`}
-            </button>
-          </form>
-
-          {analysis && (
-            <div style={styles.results}>
-              <h2 style={styles.resultsTitle}>
-                {dealType === 'residential' ? '📊 Rental Analysis' : '🏗️ Development Pro Forma'}
-              </h2>
-              <div style={styles.analysisText}>
-                {analysis.split('\n').map((line, i) => (
-                  <p key={i} style={{ margin: '8px 0' }}>{line}</p>
-                ))}
+              {/* Feature 6 */}
+              <div style={styles.featureCard}>
+                <div style={styles.featureIcon}>💼</div>
+                <h3 style={styles.featureTitle}>Investment Strategy</h3>
+                <p style={styles.featureText}>
+                  Get maximum offer prices, alternative scenarios, and strategic 
+                  recommendations to maximize your returns.
+                </p>
+                <ul style={styles.featureList}>
+                  <li>✓ Max bid recommendations</li>
+                  <li>✓ Value-add opportunities</li>
+                  <li>✓ Exit timing guidance</li>
+                  <li>✓ Portfolio fit analysis</li>
+                </ul>
               </div>
             </div>
-          )}
+          </div>
+        </section>
 
-          <div style={styles.footer}>
+        {/* Use Cases Section */}
+        <section style={styles.useCases}>
+          <div style={styles.useCasesContent}>
+            <h2 style={styles.sectionTitle}>Built for Real Estate Professionals</h2>
+            <div style={styles.useCaseGrid}>
+              <div style={styles.useCaseCard}>
+                <div style={styles.useCaseImage}>
+                  <img 
+                    src="https://images.unsplash.com/photo-1560520653-9e0e4c89eb11?w=600&q=80" 
+                    alt="Developers"
+                    style={styles.heroImage}
+                  />
+                </div>
+                <h3 style={styles.useCaseTitle}>Developers</h3>
+                <p style={styles.useCaseText}>
+                  Quickly evaluate land parcels and determine if a development pencils out 
+                  before spending thousands on feasibility studies.
+                </p>
+              </div>
+
+              <div style={styles.useCaseCard}>
+                <div style={styles.useCaseImage}>
+                  <img 
+                    src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=600&q=80" 
+                    alt="Investors"
+                    style={styles.heroImage}
+                  />
+                </div>
+                <h3 style={styles.useCaseTitle}>Investors</h3>
+                <p style={styles.useCaseText}>
+                  Underwrite dozens of deals per week to find the winners. 
+                  Move fast in competitive markets with instant analysis.
+                </p>
+              </div>
+
+              <div style={styles.useCaseCard}>
+                <div style={styles.useCaseImage}>
+                  <img 
+                    src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&q=80" 
+                    alt="Brokers"
+                    style={styles.heroImage}
+                  />
+                </div>
+                <h3 style={styles.useCaseTitle}>Brokers</h3>
+                <p style={styles.useCaseText}>
+                  Provide clients with instant market analysis and deal feasibility 
+                  reports to close more transactions.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* CTA Section */}
+        <section style={styles.cta}>
+          <div style={styles.ctaContent}>
+            <h2 style={styles.ctaTitle}>Ready to Analyze Your First Deal?</h2>
+            <p style={styles.ctaText}>
+              Join real estate professionals who are making faster, smarter investment decisions with AI.
+            </p>
+            <Link href="/analyzer">
+              <a style={styles.ctaButton}>
+                Launch Analyzer
+                <span style={styles.buttonArrow}>→</span>
+              </a>
+            </Link>
+          </div>
+        </section>
+
+        {/* Footer */}
+        <footer style={styles.footer}>
+          <div style={styles.footerContent}>
+            <div style={styles.footerLogo}>
+              <span style={styles.logoIcon}>🏢</span>
+              <span style={styles.logoText}>Build & Buy AI</span>
+            </div>
             <p style={styles.footerText}>
-              {dealType === 'residential' 
-                ? '💡 Assumptions: 20% down, 7% interest, 30yr mortgage, 50% expense rule'
-                : '💡 Pro forma includes 10-year projections, cap rate, IRR, DSCR, and feasibility analysis'
-              }
+              AI-powered real estate intelligence for the modern investor.
+            </p>
+            <p style={styles.footerCopyright}>
+              © 2026 Build & Buy AI. Built with Claude.
             </p>
           </div>
-        </div>
+        </footer>
       </div>
     </>
   )
 }
 
 const styles = {
-  container: {
-    minHeight: '100vh',
-    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-    padding: '20px',
+  page: {
     fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+    background: '#ffffff',
   },
-  content: {
-    maxWidth: '900px',
-    margin: '40px auto',
-    background: 'white',
-    borderRadius: '16px',
-    padding: '40px',
-    boxShadow: '0 20px 60px rgba(0,0,0,0.3)',
+  
+  // Navigation
+  nav: {
+    position: 'sticky',
+    top: 0,
+    background: 'rgba(255, 255, 255, 0.95)',
+    backdropFilter: 'blur(10px)',
+    borderBottom: '1px solid #e5e7eb',
+    padding: '20px 0',
+    zIndex: 1000,
   },
-  title: {
-    fontSize: '42px',
+  navContent: {
+    maxWidth: '1200px',
+    margin: '0 auto',
+    padding: '0 40px',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  logo: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '10px',
+  },
+  logoIcon: {
+    fontSize: '28px',
+  },
+  logoText: {
+    fontSize: '20px',
     fontWeight: 'bold',
     background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
     WebkitBackgroundClip: 'text',
     WebkitTextFillColor: 'transparent',
-    marginBottom: '10px',
-    textAlign: 'center',
   },
-  subtitle: {
-    fontSize: '18px',
-    color: '#64748b',
-    marginBottom: '30px',
-    textAlign: 'center',
-  },
-  tabs: {
-    display: 'flex',
-    gap: '10px',
-    marginBottom: '30px',
-    borderBottom: '2px solid #e2e8f0',
-  },
-  tab: {
-    flex: 1,
-    padding: '15px',
-    background: 'transparent',
-    border: 'none',
-    borderBottom: '3px solid transparent',
-    fontSize: '16px',
-    fontWeight: '600',
-    color: '#64748b',
-    cursor: 'pointer',
-    transition: 'all 0.2s',
-  },
-  tabActive: {
-    color: '#667eea',
-    borderBottom: '3px solid #667eea',
-  },
-  form: {
-    marginBottom: '30px',
-  },
-  formGroup: {
-    marginBottom: '20px',
-    flex: '1',
-  },
-  row: {
-    display: 'flex',
-    gap: '15px',
-    flexWrap: 'wrap',
-  },
-  label: {
-    display: 'block',
-    fontWeight: '600',
-    color: '#334155',
-    marginBottom: '8px',
-    fontSize: '14px',
-  },
-  input: {
-    width: '100%',
-    padding: '12px 16px',
-    border: '2px solid #e2e8f0',
-    borderRadius: '8px',
-    fontSize: '16px',
-    boxSizing: 'border-box',
-    transition: 'border-color 0.2s',
-    outline: 'none',
-  },
-  button: {
-    width: '100%',
-    padding: '16px',
+  navButton: {
+    padding: '12px 24px',
     background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
     color: 'white',
-    border: 'none',
-    borderRadius: '10px',
-    fontSize: '18px',
-    fontWeight: 'bold',
-    transition: 'transform 0.2s, box-shadow 0.2s',
-    boxShadow: '0 4px 15px rgba(102, 126, 234, 0.4)',
+    borderRadius: '8px',
+    textDecoration: 'none',
+    fontWeight: '600',
+    fontSize: '14px',
+    transition: 'transform 0.2s',
+    cursor: 'pointer',
   },
-  results: {
-    marginTop: '30px',
-    padding: '30px',
-    background: '#f8fafc',
+  
+  // Hero Section
+  hero: {
+    maxWidth: '1200px',
+    margin: '0 auto',
+    padding: '100px 40px 80px',
+    display: 'grid',
+    gridTemplateColumns: '1fr 1fr',
+    gap: '60px',
+    alignItems: 'center',
+  },
+  heroContent: {
+    maxWidth: '600px',
+  },
+  heroTitle: {
+    fontSize: '56px',
+    fontWeight: '800',
+    lineHeight: '1.1',
+    marginBottom: '24px',
+    color: '#111827',
+  },
+  heroGradient: {
+    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent',
+  },
+  heroSubtitle: {
+    fontSize: '20px',
+    lineHeight: '1.6',
+    color: '#6b7280',
+    marginBottom: '40px',
+  },
+  heroButtons: {
+    display: 'flex',
+    gap: '16px',
+  },
+  primaryButton: {
+    padding: '16px 32px',
+    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+    color: 'white',
     borderRadius: '12px',
-    border: '2px solid #e2e8f0',
-  },
-  resultsTitle: {
-    fontSize: '24px',
-    color: '#1e293b',
-    marginBottom: '20px',
-    fontWeight: 'bold',
-  },
-  analysisText: {
+    textDecoration: 'none',
+    fontWeight: '600',
     fontSize: '16px',
-    lineHeight: '1.8',
-    color: '#334155',
-    whiteSpace: 'pre-wrap',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px',
+    transition: 'transform 0.2s, box-shadow 0.2s',
+    boxShadow: '0 4px 20px rgba(102, 126, 234, 0.4)',
+    cursor: 'pointer',
   },
+  secondaryButton: {
+    padding: '16px 32px',
+    background: 'white',
+    color: '#667eea',
+    border: '2px solid #667eea',
+    borderRadius: '12px',
+    textDecoration: 'none',
+    fontWeight: '600',
+    fontSize: '16px',
+    transition: 'all 0.2s',
+    cursor: 'pointer',
+  },
+  buttonArrow: {
+    fontSize: '20px',
+  },
+  
+  // Hero Images
+  heroImageGrid: {
+    display: 'grid',
+    gridTemplateColumns: '1fr 1fr',
+    gap: '16px',
+  },
+  heroImageLarge: {
+    gridColumn: '1 / -1',
+    position: 'relative',
+    borderRadius: '16px',
+    overflow: 'hidden',
+    height: '300px',
+  },
+  heroImageSmall: {
+    position: 'relative',
+    borderRadius: '16px',
+    overflow: 'hidden',
+    height: '200px',
+  },
+  heroImage: {
+    width: '100%',
+    height: '100%',
+    objectFit: 'cover',
+  },
+  imageOverlay: {
+    position: 'absolute',
+    bottom: '16px',
+    left: '16px',
+    background: 'rgba(0, 0, 0, 0.7)',
+    backdropFilter: 'blur(10px)',
+    color: 'white',
+    padding: '8px 16px',
+    borderRadius: '8px',
+    fontSize: '14px',
+    fontWeight: '600',
+  },
+  
+  // Stats Section
+  stats: {
+    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+    padding: '60px 40px',
+  },
+  statsGrid: {
+    maxWidth: '1200px',
+    margin: '0 auto',
+    display: 'grid',
+    gridTemplateColumns: 'repeat(4, 1fr)',
+    gap: '40px',
+  },
+  statCard: {
+    textAlign: 'center',
+  },
+  statNumber: {
+    fontSize: '48px',
+    fontWeight: '800',
+    color: 'white',
+    marginBottom: '8px',
+  },
+  statLabel: {
+    fontSize: '16px',
+    color: 'rgba(255, 255, 255, 0.9)',
+  },
+  
+  // Features Section
+  features: {
+    padding: '100px 40px',
+    background: '#f9fafb',
+  },
+  featuresContent: {
+    maxWidth: '1200px',
+    margin: '0 auto',
+  },
+  sectionTitle: {
+    fontSize: '48px',
+    fontWeight: '800',
+    textAlign: 'center',
+    marginBottom: '16px',
+    color: '#111827',
+  },
+  sectionSubtitle: {
+    fontSize: '20px',
+    textAlign: 'center',
+    color: '#6b7280',
+    marginBottom: '60px',
+  },
+  featureGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(3, 1fr)',
+    gap: '32px',
+  },
+  featureCard: {
+    background: 'white',
+    padding: '32px',
+    borderRadius: '16px',
+    boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
+    transition: 'transform 0.2s, box-shadow 0.2s',
+  },
+  featureIcon: {
+    fontSize: '48px',
+    marginBottom: '16px',
+  },
+  featureTitle: {
+    fontSize: '24px',
+    fontWeight: '700',
+    marginBottom: '12px',
+    color: '#111827',
+  },
+  featureText: {
+    fontSize: '16px',
+    lineHeight: '1.6',
+    color: '#6b7280',
+    marginBottom: '20px',
+  },
+  featureList: {
+    listStyle: 'none',
+    padding: 0,
+    margin: 0,
+    fontSize: '14px',
+    color: '#6b7280',
+    lineHeight: '2',
+  },
+  
+  // Use Cases
+  useCases: {
+    padding: '100px 40px',
+    background: 'white',
+  },
+  useCasesContent: {
+    maxWidth: '1200px',
+    margin: '0 auto',
+  },
+  useCaseGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(3, 1fr)',
+    gap: '32px',
+  },
+  useCaseCard: {
+    textAlign: 'center',
+  },
+  useCaseImage: {
+    borderRadius: '16px',
+    overflow: 'hidden',
+    marginBottom: '24px',
+    height: '250px',
+  },
+  useCaseTitle: {
+    fontSize: '24px',
+    fontWeight: '700',
+    marginBottom: '12px',
+    color: '#111827',
+  },
+  useCaseText: {
+    fontSize: '16px',
+    lineHeight: '1.6',
+    color: '#6b7280',
+  },
+  
+  // CTA Section
+  cta: {
+    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+    padding: '100px 40px',
+  },
+  ctaContent: {
+    maxWidth: '800px',
+    margin: '0 auto',
+    textAlign: 'center',
+  },
+  ctaTitle: {
+    fontSize: '48px',
+    fontWeight: '800',
+    color: 'white',
+    marginBottom: '24px',
+  },
+  ctaText: {
+    fontSize: '20px',
+    color: 'rgba(255, 255, 255, 0.9)',
+    marginBottom: '40px',
+  },
+  ctaButton: {
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: '8px',
+    padding: '20px 40px',
+    background: 'white',
+    color: '#667eea',
+    borderRadius: '12px',
+    textDecoration: 'none',
+    fontWeight: '700',
+    fontSize: '18px',
+    transition: 'transform 0.2s',
+    cursor: 'pointer',
+  },
+  
+  // Footer
   footer: {
-    marginTop: '30px',
-    paddingTop: '20px',
-    borderTop: '1px solid #e2e8f0',
+    background: '#111827',
+    padding: '60px 40px',
+  },
+  footerContent: {
+    maxWidth: '1200px',
+    margin: '0 auto',
+    textAlign: 'center',
+  },
+  footerLogo: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '10px',
+    justifyContent: 'center',
+    marginBottom: '16px',
   },
   footerText: {
+    color: '#9ca3af',
+    marginBottom: '24px',
+  },
+  footerCopyright: {
+    color: '#6b7280',
     fontSize: '14px',
-    color: '#64748b',
-    textAlign: 'center',
-    margin: 0,
   },
 }
